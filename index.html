@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Privacy: this page may not send data to any other website. -->
+  <meta http-equiv="Content-Security-Policy" content="connect-src 'self'; form-action 'none'">
+  <title>Millim Scanner</title>
+  <link rel="stylesheet" href="app/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Millim Scanner</h1>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" data-tab="sheets">Answer sheets</button>
+      <button class="tab" role="tab" data-tab="roster">Roster</button>
+      <button class="tab" role="tab" data-tab="grade" disabled title="Coming in Phase 2">Grade scans</button>
+      <button class="tab" role="tab" data-tab="results" disabled title="Coming in Phase 3">Results</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ================= ANSWER SHEETS ================= -->
+    <section id="tab-sheets" class="panel" hidden>
+      <div class="columns">
+        <form id="sheet-form" class="card" autocomplete="off">
+          <h2>Make answer sheets</h2>
+
+          <label class="field">
+            <span>Quiz title (printed at the top; Hebrew is fine)</span>
+            <input id="quiz-title" type="text" dir="auto" maxlength="80" placeholder="e.g. מבחן בחומש – פרשת נח">
+          </label>
+
+          <div class="row">
+            <label class="field small">
+              <span>Number of questions</span>
+              <input id="quiz-questions" type="number" min="1" max="100" value="20">
+            </label>
+            <label class="field small">
+              <span>Choices per question</span>
+              <select id="quiz-choices"></select>
+            </label>
+          </div>
+
+          <fieldset class="field">
+            <legend>Choice labels</legend>
+            <div id="quiz-style" class="choice-group"></div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Questions with a different number of choices <span class="muted">(optional)</span></legend>
+            <div id="override-list"></div>
+            <button type="button" id="add-override" class="link-button">+ Add questions with a different number of choices</button>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>Who are the sheets for?</legend>
+            <label class="option">
+              <input type="radio" name="sheet-kind" value="blank" checked>
+              Blank sheets (students fill in their own name and ID)
+              <span class="inline">— copies: <input id="blank-copies" type="number" min="1" max="500" value="1"></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="sheet-kind" value="class">
+              Pre-filled, one class:
+              <select id="prefill-class"></select>
+            </label>
+            <label class="option">
+              <input type="radio" name="sheet-kind" value="grade">
+              Pre-filled, a whole grade:
+              <select id="prefill-grade"></select>
+            </label>
+          </fieldset>
+
+          <div class="actions">
+            <button type="submit" id="make-pdf" class="primary">Create PDF</button>
+            <span id="sheet-status" class="status" role="status"></span>
+          </div>
+          <p class="hint">Print at 100% size ("Actual size"), not "Fit to page".</p>
+        </form>
+
+        <div class="card preview-card">
+          <div class="preview-head">
+            <h2>Preview</h2>
+            <a id="download-pdf" class="button" hidden>Download PDF</a>
+          </div>
+          <div id="preview-empty" class="preview-empty">Your PDF will appear here.</div>
+          <iframe id="pdf-preview" title="PDF preview" hidden></iframe>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Test packet</h2>
+        <p>A packet for testing the scanner: one instruction page plus three sheets to fill in and scan.
+          It's also saved in the project as <code>test-sheets/test-packet.pdf</code>.</p>
+        <button type="button" id="make-test-packet">Create test packet</button>
+      </div>
+    </section>
+
+    <!-- ================= ROSTER ================= -->
+    <section id="tab-roster" class="panel" hidden>
+      <div class="card">
+        <h2>Roster</h2>
+        <p id="roster-summary">Loading…</p>
+        <ul id="roster-problems" class="problems"></ul>
+        <div class="actions">
+          <label class="button">
+            Load a different roster file…
+            <input id="roster-file" type="file" accept=".csv,text/csv" hidden>
+          </label>
+          <button type="button" id="roster-reset" hidden>Go back to the built-in roster</button>
+        </div>
+        <p class="hint">The roster file needs these columns: Last Name, First Name, Zipgrade ID, Class (like 4_1),
+          Hebrew First Name, Hebrew Last Name.</p>
+      </div>
+
+      <div class="card">
+        <div id="class-picker" class="class-picker"></div>
+        <table id="roster-table" class="roster-table" dir="rtl">
+          <thead>
+            <tr><th>#</th><th>שם משפחה</th><th>שם פרטי</th><th dir="ltr">Name</th><th dir="ltr">ID</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Everything runs in this browser window. Student data never leaves your computer.
+  </footer>
+
+  <!-- Tools stored inside the project (nothing is loaded from the internet) -->
+  <script src="app/vendor/pdf-lib.min.js"></script>
+  <script src="app/vendor/fontkit.umd.min.js"></script>
+  <script src="app/vendor/heebo-font.js"></script>
+  <!-- The roster, built from data/roster.csv -->
+  <script src="app/data/roster-data.js"></script>
+  <!-- The app -->
+  <script src="app/js/hebrew.js"></script>
+  <script src="app/js/roster.js"></script>
+  <script src="app/js/sheet-layout.js"></script>
+  <script src="app/js/sheet-pdf.js"></script>
+  <script src="app/js/test-sheets.js"></script>
+  <script src="app/js/storage.js"></script>
+  <script src="app/js/app.js"></script>
+</body>
+</html>

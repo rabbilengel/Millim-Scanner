@@ -1,0 +1,10 @@
+{
+  "name": "millim-scanner",
+  "private": true,
+  "description": "Bubble-sheet grading that runs entirely in the browser.",
+  "scripts": {
+    "test": "node --test \"tests/*.test.js\"",
+    "roster": "node tools/build-roster-data.js",
+    "test-packet": "node tools/make-test-packet.js"
+  }
+}
