@@ -14,7 +14,7 @@
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="sheets">Answer sheets</button>
       <button class="tab" role="tab" data-tab="roster">Roster</button>
-      <button class="tab" role="tab" data-tab="grade" disabled title="Coming in Phase 2">Grade scans</button>
+      <button class="tab" role="tab" data-tab="grade">Grade scans</button>
       <button class="tab" role="tab" data-tab="results" disabled title="Coming in Phase 3">Results</button>
     </nav>
   </header>
@@ -124,6 +124,114 @@
         </table>
       </div>
     </section>
+
+    <!-- ================= GRADE SCANS ================= -->
+    <section id="tab-grade" class="panel" hidden>
+      <div class="card">
+        <h2>1. Scanned sheets</h2>
+        <p>Choose the PDF from the copier (one sheet per page). Photos of sheets (JPG/PNG) work too.</p>
+        <div class="actions">
+          <label class="button primary-button">
+            Choose PDF or photos…
+            <input id="scan-files" type="file" accept=".pdf,application/pdf,image/*" multiple hidden>
+          </label>
+          <span id="scan-status" class="status" role="status"></span>
+          <button type="button" id="scan-clear" class="link-button" hidden>Start over</button>
+        </div>
+        <p class="hint">Choosing more files adds them to the list below.</p>
+        <progress id="scan-progress" class="progress" hidden></progress>
+      </div>
+
+      <div id="key-card" class="card" hidden>
+        <h2>2. Answer key</h2>
+        <div class="row">
+          <label class="field grow">
+            <span>Quiz name</span>
+            <input id="key-title" type="text" dir="auto" maxlength="80" placeholder="e.g. מבחן בחומש – פרשת נח">
+          </label>
+          <label class="field grow">
+            <span>Use a saved answer key</span>
+            <select id="key-saved"></select>
+          </label>
+        </div>
+        <p id="key-layout" class="muted"></p>
+        <p class="hint">Click the correct answer for each question. Click more than one if several answers are accepted.
+          A question with nothing selected is not counted.</p>
+        <div id="key-grid" class="key-grid"></div>
+        <div class="actions">
+          <label class="button">
+            Import key from CSV…
+            <input id="key-import" type="file" accept=".csv,text/csv,text/plain" hidden>
+          </label>
+          <button type="button" id="key-export">Download key as CSV</button>
+          <button type="button" id="key-clear" class="link-button">Clear key</button>
+          <span id="key-status" class="status" role="status"></span>
+        </div>
+      </div>
+
+      <div id="sheets-card" class="card" hidden>
+        <h2>3. Check the sheets</h2>
+        <p id="sheets-summary"></p>
+        <div class="table-wrap">
+          <table id="sheets-table" class="sheets-table">
+            <thead>
+              <tr><th>#</th><th>Student</th><th>Class</th><th>ID</th><th>Score</th><th>Status</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="actions">
+          <button type="button" id="save-results" class="primary">Save results</button>
+          <button type="button" id="export-results">Download results as CSV</button>
+          <span id="save-status" class="status" role="status"></span>
+        </div>
+      </div>
+
+      <!-- Review one sheet -->
+      <div id="review" class="review" hidden>
+        <div class="review-bar">
+          <strong id="review-title"></strong>
+          <span class="review-nav">
+            <button type="button" id="review-prev">← Previous</button>
+            <button type="button" id="review-next">Next →</button>
+            <button type="button" id="review-next-flagged">Next that needs review</button>
+            <button type="button" id="review-close" class="primary">Done</button>
+          </span>
+        </div>
+        <div class="review-body">
+          <div class="review-image"><canvas id="review-canvas"></canvas></div>
+          <div class="review-side">
+            <section class="review-section">
+              <h3>Student</h3>
+              <div class="row">
+                <label class="field small">
+                  <span>ID</span>
+                  <input id="review-id" type="text" inputmode="numeric" maxlength="7" dir="ltr">
+                </label>
+                <label class="field grow">
+                  <span>or choose the student</span>
+                  <select id="review-student"></select>
+                </label>
+              </div>
+              <p id="review-student-info"></p>
+            </section>
+            <ul id="review-problems" class="problems"></ul>
+            <section class="review-section">
+              <h3>Questions to check</h3>
+              <div id="review-flagged"></div>
+            </section>
+            <details class="review-section">
+              <summary>All answers on this sheet</summary>
+              <div id="review-all" class="review-all"></div>
+            </details>
+            <div class="actions">
+              <button type="button" id="review-accept" class="primary">This sheet is correct ✓</button>
+              <button type="button" id="review-skip" class="link-button">Leave this page out</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -143,6 +251,15 @@
   <script src="app/js/sheet-pdf.js"></script>
   <script src="app/js/test-sheets.js"></script>
   <script src="app/js/storage.js"></script>
+  <!-- The scan reader -->
+  <script src="app/vendor/pdf.min.js"></script>
+  <script src="app/js/reader/image.js"></script>
+  <script src="app/js/reader/homography.js"></script>
+  <script src="app/js/reader/find-sheet.js"></script>
+  <script src="app/js/reader/read-sheet.js"></script>
+  <script src="app/js/grading.js"></script>
+  <script src="app/js/scan-input.js"></script>
   <script src="app/js/app.js"></script>
+  <script src="app/js/grade-ui.js"></script>
 </body>
 </html>

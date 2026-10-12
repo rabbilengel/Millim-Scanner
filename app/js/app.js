@@ -41,6 +41,9 @@
       if (!csv) { csv = window.MILLIM_ROSTER_CSV || ''; state.rosterSource = 'built into the app (from data/roster.csv)'; }
     }
     state.roster = M.roster.fromCsv(csv);
+    // Share the roster with the other screens (e.g. Grade scans).
+    M.currentRoster = state.roster;
+    document.dispatchEvent(new CustomEvent('millim:roster'));
     $('roster-reset').hidden = !override;
     renderRoster();
     fillClassAndGradeLists();
