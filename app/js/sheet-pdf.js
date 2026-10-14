@@ -111,17 +111,23 @@
     });
   }
 
-  function drawIdGrid(p, layout, student) {
+  // The parts of the ID grid that are the same on every sheet.
+  function drawIdGrid(p, layout) {
     const g = layout.id;
     p.rect(g.frame.x, g.frame.y, g.frame.w, g.frame.h, { stroke: FAINT, lineWidth: 0.6 });
     p.text('מספר תלמיד  Student ID', { x: g.centerX, y: g.labelY - 2, size: 8, align: 'center', bold: true });
-    const digits = student ? student.id.split('') : null;
-    for (const box of g.boxes) {
-      p.rect(box.x - box.w / 2, box.y - box.h / 2, box.w, box.h, { stroke: BUBBLE_LINE, lineWidth: 0.6 });
-      if (digits) p.text(digits[box.digit], { x: box.x, y: box.y + 4.5, size: 12, bold: true, align: 'center', dir: 'ltr' });
-    }
+    for (const box of g.boxes) p.rect(box.x - box.w / 2, box.y - box.h / 2, box.w, box.h, { stroke: BUBBLE_LINE, lineWidth: 0.6 });
+    for (const b of g.bubbles) drawBubble(p, b, false);
+  }
+
+  // A student's ID: digits in the boxes and the matching bubbles filled in black.
+  function drawStudentId(p, layout, student) {
+    const g = layout.id;
+    const digits = student.id.split('');
+    for (const box of g.boxes) p.text(digits[box.digit], { x: box.x, y: box.y + 4.5, size: 12, bold: true, align: 'center', dir: 'ltr' });
     for (const b of g.bubbles) {
-      drawBubble(p, b, digits ? Number(digits[b.digit]) === b.value : false);
+      // slightly larger than the bubble, to cover its printed outline completely
+      if (Number(digits[b.digit]) === b.value) p.circle(b.x, b.y, b.r + 0.5, { fill: BLACK });
     }
   }
 
@@ -139,18 +145,23 @@
     for (const draw of wrong) { draw(ex); ex -= 20; }
   }
 
-  function drawHeader(p, layout, title, student) {
+  function drawStudentHeader(p, layout, student) {
+    const h = layout.header, right = h.right;
+    const hebName = [student.hebFirst, student.hebLast].filter(Boolean).join(' ');
+    p.text('שם: ' + (hebName || student.firstName + ' ' + student.lastName), { x: right, y: h.top + 14, size: 14, bold: true, align: 'right', dir: 'rtl' });
+    p.text('כיתה: ' + student.classLabel, { x: right, y: h.top + 34, size: 12, bold: true, align: 'right', dir: 'rtl' });
+    p.text(student.firstName + ' ' + student.lastName + '  ·  ' + student.classCode + '  ·  ID ' + student.id,
+      { x: right, y: h.top + 50, size: 8.5, align: 'right', dir: 'ltr', color: [0.35, 0.35, 0.35] });
+  }
+
+  // prefilled: true for sheets that will have a student's name and ID printed on them.
+  function drawHeader(p, layout, title, prefilled) {
     const h = layout.header;
     const right = h.right;
     if (title) p.text(title, { x: layout.page.width / 2, y: h.titleY, size: 15, bold: true, align: 'center' });
 
-    if (student) {
-      const hebName = [student.hebFirst, student.hebLast].filter(Boolean).join(' ');
-      p.text('שם: ' + (hebName || student.firstName + ' ' + student.lastName), { x: right, y: h.top + 14, size: 14, bold: true, align: 'right', dir: 'rtl' });
-      p.text('כיתה: ' + student.classLabel, { x: right, y: h.top + 34, size: 12, bold: true, align: 'right', dir: 'rtl' });
+    if (prefilled) {
       p.text('תאריך: ____________', { x: right - 110, y: h.top + 34, size: 11, align: 'right', dir: 'rtl' });
-      p.text(student.firstName + ' ' + student.lastName + '  ·  ' + student.classCode + '  ·  ID ' + student.id,
-        { x: right, y: h.top + 50, size: 8.5, align: 'right', dir: 'ltr', color: [0.35, 0.35, 0.35] });
     } else {
       p.text('שם: ________________________________', { x: right, y: h.top + 16, size: 12, align: 'right', dir: 'rtl' });
       p.text('כיתה: __________      תאריך: ______________', { x: right, y: h.top + 42, size: 12, align: 'right', dir: 'rtl' });
@@ -163,7 +174,7 @@
       'מלאו את העיגול כולו בעיפרון כהה.',
       'סמנו תשובה אחת בלבד לכל שאלה.',
       'כדי לשנות תשובה – מחקו היטב.',
-      student ? 'מספר התלמיד כבר מסומן – אין צורך לסמן אותו.' : 'כתבו את מספר התלמיד במשבצות וסמנו את העיגולים מתחתיו.',
+      prefilled ? 'מספר התלמיד כבר מסומן – אין צורך לסמן אותו.' : 'כתבו את מספר התלמיד במשבצות וסמנו את העיגולים מתחתיו.',
     ];
     const tx = right - 10;
     p.text('הוראות', { x: tx, y: boxTop + 16, size: 10.5, bold: true, align: 'right', dir: 'rtl' });
@@ -184,19 +195,31 @@
     }
   }
 
-  function drawFooter(p, layout, title) {
+  function drawFooter(p, layout) {
     const q = layout.quiz;
     const style = L.CHOICE_STYLES[q.choiceStyle];
     const info = q.numQuestions + ' questions  ·  ' + style.labels.slice(0, q.maxChoices).join(' ') + '  ·  layout v' + layout.version;
     p.text('Millim Scanner  ·  ' + info, { x: layout.page.width / 2, y: layout.footerY, size: 7, align: 'center', dir: 'ltr', color: FAINT });
   }
 
-  function drawSheet(p, layout, title, student) {
+  // Everything that is the same on every copy of the sheet.
+  function drawSheetCommon(p, layout, title, prefilled) {
     drawMarkers(p, layout);
-    drawHeader(p, layout, title, student);
-    drawIdGrid(p, layout, student);
+    drawHeader(p, layout, title, prefilled);
+    drawIdGrid(p, layout);
     drawAnswers(p, layout);
-    drawFooter(p, layout, title);
+    drawFooter(p, layout);
+  }
+
+  // The student's own details (pre-filled sheets only).
+  function drawSheetStudent(p, layout, student) {
+    drawStudentHeader(p, layout, student);
+    drawStudentId(p, layout, student);
+  }
+
+  function drawSheet(p, layout, title, student) {
+    drawSheetCommon(p, layout, title, !!student);
+    if (student) drawSheetStudent(p, layout, student);
   }
 
   async function newDocument() {
@@ -214,15 +237,25 @@
 
   async function create(opts) {
     const layout = L.sheetLayout(opts.quiz);
-    const { pdf, fonts } = await newDocument();
     const title = (opts.quiz.title || '').trim();
-    pdf.setTitle(title || 'Answer sheets');
-    pdf.setCreator('Millim Scanner');
     const students = opts.students && opts.students.length ? opts.students : null;
     const pages = students || new Array(Math.max(1, Number(opts.copies) || 1)).fill(null);
+    const size = [layout.page.width, layout.page.height];
+
+    // Draw the shared part of the sheet once, then stamp it onto every page.
+    // (Much faster for a whole grade, and keeps the PDF small.)
+    const template = await newDocument();
+    drawSheetCommon(Painter(template.pdf, template.pdf.addPage(size), template.fonts), layout, title, !!students);
+    const templateBytes = await template.pdf.save();
+
+    const { pdf, fonts } = await newDocument();
+    pdf.setTitle(title || 'Answer sheets');
+    pdf.setCreator('Millim Scanner');
+    const [shared] = await pdf.embedPdf(templateBytes);
     for (const student of pages) {
-      const page = pdf.addPage([layout.page.width, layout.page.height]);
-      drawSheet(Painter(pdf, page, fonts), layout, title, student);
+      const page = pdf.addPage(size);
+      page.drawPage(shared);
+      if (student) drawSheetStudent(Painter(pdf, page, fonts), layout, student);
     }
     return pdf.save();
   }
