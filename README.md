@@ -1,21 +1,22 @@
 # Millim Scanner
 
-A bubble-sheet grading program (like ZipGrade) that runs entirely in your web browser.
-Nothing to install, and student data never leaves your computer.
+A bubble-sheet grading program (like ZipGrade) that runs in your web browser. Nothing to install.
+Sign in from any computer to see all your quizzes and results.
 
 **Status**
 - ✅ Phase 1 — print answer sheets (blank or pre-filled per student)
 - ✅ Phase 2 — read scanned sheets, review, grade, save, download results as CSV
-- ⏳ Phase 3 — results by class, item analysis
+- ✅ Phase 3 — results by class, item analysis, answer-key fixes, backup
+- ✅ Online accounts — sign in from any computer (Google Firebase); see [docs/firebase-setup.md](docs/firebase-setup.md)
 
 ---
 
 ## How to open the app
 
-**Option A — from the website (once GitHub Pages is turned on):**
-open `https://rabbilengel.github.io/Millim-Scanner/`. See [docs/github-pages.md](docs/github-pages.md).
+**From the website (recommended):** open **https://rabbilengel.github.io/Millim-Scanner/** on any computer,
+tablet or phone, and sign in with your email and password. Your quizzes and results are saved to your account.
 
-**Option B — from your computer:**
+**From a downloaded copy (works without internet, but no account — results stay in that browser):**
 1. On the repository's GitHub page, click the green **Code** button → **Download ZIP**.
 2. Open the downloaded ZIP and choose **Extract all** (don't just double-click inside the ZIP).
 3. In the extracted folder, double-click **`index.html`**. Chrome or Edge recommended.
@@ -45,7 +46,21 @@ an unclear or unknown student ID, the same ID on two sheets, and pages that aren
 
 Scanning tips: grayscale (or color), 200–300 dpi. One sheet per page.
 
+**Results tab**
+- Pick a quiz. See how many students were graded, the average, highest and lowest score.
+- Pick a class to see **every student in it, sorted by Hebrew last name** — including who hasn't been graded yet.
+  Click a student to see their answers (wrong answers in red). Delete a result if it was saved by mistake.
+- **Item analysis:** for each question, the percent who got it right and how many chose each answer — the correct
+  answer in green, the most-chosen wrong answer in orange. Questions most students missed are marked in red.
+- **Answer key:** fix the key after grading (accept a second answer, drop a bad question) — everyone is re-scored at once.
+- **Download** results or item analysis as CSV (for the whole quiz or one class).
+- **Backup:** download one file with all your quizzes and results, and restore it on any computer.
+
 **Roster tab** — shows each class, sorted by Hebrew last name.
+
+**Signing in and out** — when you open the website you'll be asked for your email and password. On a shared
+computer, untick "Keep me signed in", or click **Sign out** (top right) when you're done; signing out also erases the
+copy of your data kept on that computer. Forgot your password? Type your email and click **Forgot password?**.
 
 ## Updating the roster
 
@@ -77,12 +92,21 @@ app/
       read-sheet.js     straightens the page, evens out lighting, reads the sheet code, ID and every bubble
     scan-input.js     ← opens PDFs (with pdf.js) and photos in the browser
     grading.js        ← answer keys, CSV import, scoring
+    results.js        ← class lists, averages, item analysis, results CSV
+    firebase-config.js← which Firebase project holds your account and results
+    cloud.js          ← signing in, and reading/writing your data in Firebase
+    data-store.js     ← the one place screens save/load (your account, or this browser if not signed in)
     app.js            ← the screens: tabs, answer sheets, roster
     grade-ui.js       ← the Grade scans screen and the review screen
+    results-ui.js     ← the Results screen and backup
+    account-ui.js     ← the sign-in screen
+    key-grid.js, ui-util.js ← small shared screen pieces
   css/style.css       ← how the screens look
   data/roster-data.js ← copy of the roster for when the app is opened from a file (generated)
-  vendor/             ← tools stored in the project: pdf-lib (makes PDFs), pdf.js (reads PDFs), fontkit, Heebo font
+  vendor/             ← tools stored in the project: pdf-lib (makes PDFs), pdf.js (reads PDFs), fontkit, Heebo font,
+                        Firebase (accounts and online storage)
 data/roster.csv       ← your roster
+firestore.rules       ← Firebase security rules: each account can only see its own data
 test-sheets/          ← printable test packet
 test-scans/           ← your scans of the test packet (used by the tests)
 tests/                ← automated tests
@@ -111,14 +135,18 @@ To run them yourself (developers): `npm test` (needs Node.js 22+; `pdftoppm` fro
 
 - [Getting Claude's changes into your main branch](docs/merging-changes.md)
 - [Turning on GitHub Pages](docs/github-pages.md)
+- [Setting up your online account (Firebase)](docs/firebase-setup.md)
 
 ## Privacy
 
-All processing happens in your browser. The page includes a security setting that blocks it from sending data to
-any other website. Settings, answer keys and saved results are remembered only in this browser on this computer
-(clearing the browser's history/site data erases them — download the results CSV to keep a copy).
+Reading scans, grading and making PDFs all happen in your browser; scanned images are never uploaded.
+When you're signed in, your **answer keys and results** (student names, IDs, answers, scores) are saved to your own
+Google Firebase project, where security rules let only your account read or change them. The page includes a security
+setting that blocks it from sending data anywhere except its own website and Google Firebase.
+Without an account (e.g. a downloaded copy opened from a file), everything is saved only in that browser.
 
 ## Credits
 
-[pdf-lib](https://pdf-lib.js.org) and fontkit (MIT license). [pdf.js](https://mozilla.github.io/pdf.js/) (Apache 2.0 license). [Heebo](https://github.com/OdedEzer/heebo) font
+[pdf-lib](https://pdf-lib.js.org) and fontkit (MIT license). [pdf.js](https://mozilla.github.io/pdf.js/) and the
+[Firebase](https://firebase.google.com) JavaScript SDK (Apache 2.0 license). [Heebo](https://github.com/OdedEzer/heebo) font
 (SIL Open Font License, see `app/vendor/Heebo-OFL-LICENSE.txt`).
