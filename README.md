@@ -65,7 +65,6 @@ copy of your data kept on that computer. Forgot your password? Type your email a
 ## Updating the roster
 
 The roster lives **in your account** (Firebase), so every computer you sign in on has the same, latest list.
-(The first time you signed in, the app copied `data/roster.csv` from this project into your account.)
 
 Everything is done in the **Roster** tab:
 - **+ Add a student** — Hebrew and English names, 7-digit ID, class (or a new class like `4_6`).
@@ -75,7 +74,8 @@ Everything is done in the **Roster** tab:
 - **Download the roster (CSV)** — opens in Excel with Hebrew names; also a handy backup.
 
 Saved quiz results are kept when a student is removed or moved.
-Without an account (a downloaded copy opened from a file), the roster is kept in that browser instead.
+Without an account (a downloaded copy opened from a file), the roster is kept in that browser instead —
+load it there with **Replace the whole roster from a CSV file** (use a file from **Download the roster**).
 
 ## How the project is organized
 
@@ -106,10 +106,8 @@ app/
     account-ui.js     ← the sign-in screen
     key-grid.js, ui-util.js ← small shared screen pieces
   css/style.css       ← how the screens look
-  data/roster-data.js ← copy of the roster for when the app is opened from a file (generated)
   vendor/             ← tools stored in the project: pdf-lib (makes PDFs), pdf.js (reads PDFs), fontkit, Heebo font,
                         Firebase (accounts and online storage)
-data/roster.csv       ← your roster
 firestore.rules       ← Firebase security rules: each account can only see its own data
 test-sheets/          ← printable test packet
 test-scans/           ← your scans of the test packet (used by the tests)

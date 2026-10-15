@@ -1,0 +1,376 @@
+Last Name,First Name,Zipgrade ID,Class,Hebrew First Name,Hebrew Last Name
+Shapiro,Levi,9100001,4_1,לוי יצחק,שפירא
+Levi,Chaim,9100002,4_1,חיים,לוי
+Tenenbaum,Dovid,9100003,4_1,דוד,טננבוים
+Rosen,Dovid,9100004,4_1,דוד,רוזן
+Levi,Yaakov,9100005,4_1,יעקב,לוי
+Silber,Boruch,9100006,4_1,ברוך,זילבר
+Levi,Mendel,9100007,4_1,מנחם מענדל,לוי
+Klein,Dovid,9100008,4_1,דוד,קליין
+Friedman,Chaim,9100009,4_1,חיים,פרידמן
+Friedman,Mendel,9100010,4_1,מנחם מענדל,פרידמן
+Klein,Shmuel,9100011,4_1,שמואל,קליין
+Margolis,Moshe,9100012,4_1,משה,מרגליות
+Brook,Dovid,9100013,4_1,דוד,ברוק
+Margolis,Avraham,9100014,4_1,אברהם,מרגליות
+Margolis,Moshe,9100015,4_1,משה,מרגליות
+Stern,Yaakov,9100016,4_1,יעקב,שטרן
+Brook,Moshe,9100017,4_1,משה,ברוק
+Tenenbaum,Moshe,9100018,4_1,משה,טננבוים
+Shapiro,Noson,9100019,4_1,נתן,שפירא
+Klein,Zalman,9100020,4_1,שניאור זלמן,קליין
+Tenenbaum,Yosef,9100021,4_1,יוסף,טננבוים
+Margolis,Dovid,9100022,4_1,דוד,מרגליות
+Tenenbaum,Zalman,9100023,4_1,שניאור זלמן,טננבוים
+Rabinowitz,Noson,9100024,4_1,נתן,רבינוביץ
+Margolis,Dovid,9100025,4_1,דוד,מרגליות
+Kaplan,Yaakov,9100026,4_2,יעקב,קפלן
+Goldberg,Levi,9100027,4_2,לוי יצחק,גולדברג
+Friedman,Shmuel,9100028,4_2,שמואל,פרידמן
+Levi,Yaakov,9100029,4_2,יעקב,לוי
+Kaplan,Yaakov,9100030,4_2,יעקב,קפלן
+Tenenbaum,Eli,9100031,4_2,אליהו,טננבוים
+Weiss,Chaim,9100032,4_2,חיים,וייס
+Margolis,Eli,9100033,4_2,אליהו,מרגליות
+Adler,Boruch,9100034,4_2,ברוך,אדלר
+Green,Levi,9100035,4_2,לוי יצחק,גרין
+Rabinowitz,Mendel,9100036,4_2,מנחם מענדל,רבינוביץ
+Brook,Yisroel,9100037,4_2,ישראל,ברוק
+Margolis,Dovid,9100038,4_2,דוד,מרגליות
+Silber,Zalman,9100039,4_2,שניאור זלמן,זילבר
+Weiss,Eli,9100040,4_2,אליהו,וייס
+Adler,Yisroel,9100041,4_2,ישראל,אדלר
+Eisenberg,Zalman,9100042,4_2,שניאור זלמן,אייזנברג
+Goldberg,Dovid,9100043,4_2,דוד,גולדברג
+Klein,Shmuel,9100044,4_2,שמואל,קליין
+Weiss,Yosef,9100045,4_2,יוסף,וייס
+Blum,Yosef,9100046,4_2,יוסף,בלום
+Levi,Chaim,9100047,4_2,חיים,לוי
+Friedman,Avraham,9100048,4_2,אברהם,פרידמן
+Tenenbaum,Tzvi,9100049,4_2,צבי,טננבוים
+Weiss,Yaakov,9100050,4_2,יעקב,וייס
+Rosen,Levi,9100051,4_3,לוי יצחק,רוזן
+Blum,Yaakov,9100052,4_3,יעקב,בלום
+Adler,Yaakov,9100053,4_3,יעקב,אדלר
+Friedman,Dovid,9100054,4_3,דוד,פרידמן
+Blum,Zalman,9100055,4_3,שניאור זלמן,בלום
+Friedman,Yisroel,9100056,4_3,ישראל,פרידמן
+Green,Moshe,9100057,4_3,משה,גרין
+Margolis,Avraham,9100058,4_3,אברהם,מרגליות
+Adler,Avraham,9100059,4_3,אברהם,אדלר
+Stern,Zalman,9100060,4_3,שניאור זלמן,שטרן
+Rosen,Boruch,9100061,4_3,ברוך,רוזן
+Adler,Moshe,9100062,4_3,משה,אדלר
+Rabinowitz,Levi,9100063,4_3,לוי יצחק,רבינוביץ
+Goldberg,Yaakov,9100064,4_3,יעקב,גולדברג
+Levi,Eli,9100065,4_3,אליהו,לוי
+Green,Mendel,9100066,4_3,מנחם מענדל,גרין
+Brook,Yosef,9100067,4_3,יוסף,ברוק
+Stern,Chaim,9100068,4_3,חיים,שטרן
+Blum,Boruch,9100069,4_3,ברוך,בלום
+Rabinowitz,Dovid,9100070,4_3,דוד,רבינוביץ
+Stern,Eli,9100071,4_3,אליהו,שטרן
+Heller,Shmuel,9100072,4_3,שמואל,הלר
+Shapiro,Boruch,9100073,4_3,ברוך,שפירא
+Klein,Noson,9100074,4_3,נתן,קליין
+Tenenbaum,Noson,9100075,4_3,נתן,טננבוים
+Klein,Zalman,9100076,4_4,שניאור זלמן,קליין
+Stern,Levi,9100077,4_4,לוי יצחק,שטרן
+Shapiro,Mendel,9100078,4_4,מנחם מענדל,שפירא
+Rabinowitz,Dovid,9100079,4_4,דוד,רבינוביץ
+Brook,Yosef,9100080,4_4,יוסף,ברוק
+Brook,Avraham,9100081,4_4,אברהם,ברוק
+Blum,Moshe,9100082,4_4,משה,בלום
+Margolis,Noson,9100083,4_4,נתן,מרגליות
+Heller,Yosef,9100084,4_4,יוסף,הלר
+Cohen,Zalman,9100085,4_4,שניאור זלמן,כהן
+Klein,Yosef,9100086,4_4,יוסף,קליין
+Rosen,Shmuel,9100087,4_4,שמואל,רוזן
+Margolis,Yaakov,9100088,4_4,יעקב,מרגליות
+Shapiro,Levi,9100089,4_4,לוי יצחק,שפירא
+Silber,Yisroel,9100090,4_4,ישראל,זילבר
+Levi,Yaakov,9100091,4_4,יעקב,לוי
+Tenenbaum,Eli,9100092,4_4,אליהו,טננבוים
+Stern,Chaim,9100093,4_4,חיים,שטרן
+Stern,Chaim,9100094,4_4,חיים,שטרן
+Blum,Dovid,9100095,4_4,דוד,בלום
+Stern,Avraham,9100096,4_4,אברהם,שטרן
+Kaplan,Moshe,9100097,4_4,משה,קפלן
+Kaplan,Dovid,9100098,4_4,דוד,קפלן
+Rabinowitz,Eli,9100099,4_4,אליהו,רבינוביץ
+Weiss,Dovid,9100100,4_4,דוד,וייס
+Levi,Yaakov,9100101,4_5,יעקב,לוי
+Cohen,Dovid,9100102,4_5,דוד,כהן
+Shapiro,Yaakov,9100103,4_5,יעקב,שפירא
+Goldberg,Shmuel,9100104,4_5,שמואל,גולדברג
+Eisenberg,Levi,9100105,4_5,לוי יצחק,אייזנברג
+Friedman,Moshe,9100106,4_5,משה,פרידמן
+Kaplan,Noson,9100107,4_5,נתן,קפלן
+Stern,Yaakov,9100108,4_5,יעקב,שטרן
+Heller,Yosef,9100109,4_5,יוסף,הלר
+Eisenberg,Levi,9100110,4_5,לוי יצחק,אייזנברג
+Blum,Levi,9100111,4_5,לוי יצחק,בלום
+Goldberg,Dovid,9100112,4_5,דוד,גולדברג
+Blum,Noson,9100113,4_5,נתן,בלום
+Blum,Eli,9100114,4_5,אליהו,בלום
+Green,Eli,9100115,4_5,אליהו,גרין
+Shapiro,Dovid,9100116,4_5,דוד,שפירא
+Weiss,Dovid,9100117,4_5,דוד,וייס
+Heller,Yisroel,9100118,4_5,ישראל,הלר
+Rabinowitz,Eli,9100119,4_5,אליהו,רבינוביץ
+Cohen,Shmuel,9100120,4_5,שמואל,כהן
+Silber,Mendel,9100121,4_5,מנחם מענדל,זילבר
+Shapiro,Levi,9100122,4_5,לוי יצחק,שפירא
+Tenenbaum,Yisroel,9100123,4_5,ישראל,טננבוים
+Cohen,Boruch,9100124,4_5,ברוך,כהן
+Silber,Tzvi,9100125,4_5,צבי,זילבר
+Friedman,Zalman,9100126,5_1,שניאור זלמן,פרידמן
+Heller,Yisroel,9100127,5_1,ישראל,הלר
+Rosen,Shmuel,9100128,5_1,שמואל,רוזן
+Rabinowitz,Boruch,9100129,5_1,ברוך,רבינוביץ
+Brook,Levi,9100130,5_1,לוי יצחק,ברוק
+Tenenbaum,Shmuel,9100131,5_1,שמואל,טננבוים
+Silber,Tzvi,9100132,5_1,צבי,זילבר
+Brook,Levi,9100133,5_1,לוי יצחק,ברוק
+Kaplan,Yaakov,9100134,5_1,יעקב,קפלן
+Brook,Tzvi,9100135,5_1,צבי,ברוק
+Stern,Noson,9100136,5_1,נתן,שטרן
+Brook,Yisroel,9100137,5_1,ישראל,ברוק
+Silber,Mendel,9100138,5_1,מנחם מענדל,זילבר
+Rosen,Eli,9100139,5_1,אליהו,רוזן
+Cohen,Yisroel,9100140,5_1,ישראל,כהן
+Heller,Moshe,9100141,5_1,משה,הלר
+Heller,Eli,9100142,5_1,אליהו,הלר
+Eisenberg,Mendel,9100143,5_1,מנחם מענדל,אייזנברג
+Adler,Levi,9100144,5_1,לוי יצחק,אדלר
+Rosen,Tzvi,9100145,5_1,צבי,רוזן
+Friedman,Levi,9100146,5_1,לוי יצחק,פרידמן
+Goldberg,Mendel,9100147,5_1,מנחם מענדל,גולדברג
+Blum,Mendel,9100148,5_1,מנחם מענדל,בלום
+Weiss,Mendel,9100149,5_1,מנחם מענדל,וייס
+Blum,Mendel,9100150,5_1,מנחם מענדל,בלום
+Eisenberg,Yaakov,9100151,5_2,יעקב,אייזנברג
+Cohen,Noson,9100152,5_2,נתן,כהן
+Rosen,Eli,9100153,5_2,אליהו,רוזן
+Friedman,Tzvi,9100154,5_2,צבי,פרידמן
+Goldberg,Noson,9100155,5_2,נתן,גולדברג
+Stern,Boruch,9100156,5_2,ברוך,שטרן
+Kaplan,Tzvi,9100157,5_2,צבי,קפלן
+Rabinowitz,Eli,9100158,5_2,אליהו,רבינוביץ
+Weiss,Chaim,9100159,5_2,חיים,וייס
+Stern,Dovid,9100160,5_2,דוד,שטרן
+Stern,Eli,9100161,5_2,אליהו,שטרן
+Friedman,Yisroel,9100162,5_2,ישראל,פרידמן
+Rabinowitz,Yisroel,9100163,5_2,ישראל,רבינוביץ
+Shapiro,Yosef,9100164,5_2,יוסף,שפירא
+Shapiro,Moshe,9100165,5_2,משה,שפירא
+Adler,Yaakov,9100166,5_2,יעקב,אדלר
+Shapiro,Tzvi,9100167,5_2,צבי,שפירא
+Eisenberg,Yaakov,9100168,5_2,יעקב,אייזנברג
+Rosen,Eli,9100169,5_2,אליהו,רוזן
+Tenenbaum,Yosef,9100170,5_2,יוסף,טננבוים
+Shapiro,Shmuel,9100171,5_2,שמואל,שפירא
+Cohen,Moshe,9100172,5_2,משה,כהן
+Goldberg,Tzvi,9100173,5_2,צבי,גולדברג
+Shapiro,Shmuel,9100174,5_2,שמואל,שפירא
+Kaplan,Chaim,9100175,5_2,חיים,קפלן
+Kaplan,Noson,9100176,5_3,נתן,קפלן
+Heller,Moshe,9100177,5_3,משה,הלר
+Green,Mendel,9100178,5_3,מנחם מענדל,גרין
+Brook,Shmuel,9100179,5_3,שמואל,ברוק
+Margolis,Tzvi,9100180,5_3,צבי,מרגליות
+Heller,Levi,9100181,5_3,לוי יצחק,הלר
+Klein,Shmuel,9100182,5_3,שמואל,קליין
+Shapiro,Noson,9100183,5_3,נתן,שפירא
+Rosen,Moshe,9100184,5_3,משה,רוזן
+Adler,Boruch,9100185,5_3,ברוך,אדלר
+Margolis,Avraham,9100186,5_3,אברהם,מרגליות
+Silber,Noson,9100187,5_3,נתן,זילבר
+Silber,Chaim,9100188,5_3,חיים,זילבר
+Tenenbaum,Yosef,9100189,5_3,יוסף,טננבוים
+Silber,Yosef,9100190,5_3,יוסף,זילבר
+Cohen,Shmuel,9100191,5_3,שמואל,כהן
+Adler,Noson,9100192,5_3,נתן,אדלר
+Rabinowitz,Tzvi,9100193,5_3,צבי,רבינוביץ
+Cohen,Yaakov,9100194,5_3,יעקב,כהן
+Shapiro,Tzvi,9100195,5_3,צבי,שפירא
+Shapiro,Yosef,9100196,5_3,יוסף,שפירא
+Eisenberg,Eli,9100197,5_3,אליהו,אייזנברג
+Goldberg,Yisroel,9100198,5_3,ישראל,גולדברג
+Levi,Shmuel,9100199,5_3,שמואל,לוי
+Silber,Levi,9100200,5_3,לוי יצחק,זילבר
+Tenenbaum,Shmuel,9100201,5_4,שמואל,טננבוים
+Goldberg,Eli,9100202,5_4,אליהו,גולדברג
+Tenenbaum,Boruch,9100203,5_4,ברוך,טננבוים
+Brook,Moshe,9100204,5_4,משה,ברוק
+Heller,Mendel,9100205,5_4,מנחם מענדל,הלר
+Goldberg,Moshe,9100206,5_4,משה,גולדברג
+Adler,Shmuel,9100207,5_4,שמואל,אדלר
+Cohen,Shmuel,9100208,5_4,שמואל,כהן
+Friedman,Tzvi,9100209,5_4,צבי,פרידמן
+Weiss,Eli,9100210,5_4,אליהו,וייס
+Silber,Yaakov,9100211,5_4,יעקב,זילבר
+Silber,Yaakov,9100212,5_4,יעקב,זילבר
+Heller,Mendel,9100213,5_4,מנחם מענדל,הלר
+Silber,Eli,9100214,5_4,אליהו,זילבר
+Blum,Shmuel,9100215,5_4,שמואל,בלום
+Brook,Shmuel,9100216,5_4,שמואל,ברוק
+Silber,Yisroel,9100217,5_4,ישראל,זילבר
+Heller,Boruch,9100218,5_4,ברוך,הלר
+Tenenbaum,Boruch,9100219,5_4,ברוך,טננבוים
+Kaplan,Boruch,9100220,5_4,ברוך,קפלן
+Adler,Noson,9100221,5_4,נתן,אדלר
+Klein,Yosef,9100222,5_4,יוסף,קליין
+Stern,Dovid,9100223,5_4,דוד,שטרן
+Weiss,Eli,9100224,5_4,אליהו,וייס
+Brook,Dovid,9100225,5_4,דוד,ברוק
+Friedman,Chaim,9100226,5_5,חיים,פרידמן
+Green,Mendel,9100227,5_5,מנחם מענדל,גרין
+Goldberg,Tzvi,9100228,5_5,צבי,גולדברג
+Shapiro,Boruch,9100229,5_5,ברוך,שפירא
+Rosen,Yisroel,9100230,5_5,ישראל,רוזן
+Heller,Yosef,9100231,5_5,יוסף,הלר
+Shapiro,Boruch,9100232,5_5,ברוך,שפירא
+Brook,Eli,9100233,5_5,אליהו,ברוק
+Goldberg,Yisroel,9100234,5_5,ישראל,גולדברג
+Blum,Chaim,9100235,5_5,חיים,בלום
+Brook,Yosef,9100236,5_5,יוסף,ברוק
+Klein,Yosef,9100237,5_5,יוסף,קליין
+Stern,Shmuel,9100238,5_5,שמואל,שטרן
+Klein,Levi,9100239,5_5,לוי יצחק,קליין
+Rosen,Mendel,9100240,5_5,מנחם מענדל,רוזן
+Friedman,Levi,9100241,5_5,לוי יצחק,פרידמן
+Rosen,Yisroel,9100242,5_5,ישראל,רוזן
+Weiss,Moshe,9100243,5_5,משה,וייס
+Adler,Shmuel,9100244,5_5,שמואל,אדלר
+Cohen,Eli,9100245,5_5,אליהו,כהן
+Weiss,Chaim,9100246,5_5,חיים,וייס
+Eisenberg,Shmuel,9100247,5_5,שמואל,אייזנברג
+Silber,Zalman,9100248,5_5,שניאור זלמן,זילבר
+Goldberg,Dovid,9100249,5_5,דוד,גולדברג
+Brook,Boruch,9100250,5_5,ברוך,ברוק
+Goldberg,Boruch,9100251,6_1,ברוך,גולדברג
+Heller,Dovid,9100252,6_1,דוד,הלר
+Levi,Zalman,9100253,6_1,שניאור זלמן,לוי
+Rabinowitz,Boruch,9100254,6_1,ברוך,רבינוביץ
+Shapiro,Zalman,9100255,6_1,שניאור זלמן,שפירא
+Klein,Noson,9100256,6_1,נתן,קליין
+Heller,Noson,9100257,6_1,נתן,הלר
+Shapiro,Chaim,9100258,6_1,חיים,שפירא
+Silber,Shmuel,9100259,6_1,שמואל,זילבר
+Blum,Yaakov,9100260,6_1,יעקב,בלום
+Weiss,Yisroel,9100261,6_1,ישראל,וייס
+Heller,Dovid,9100262,6_1,דוד,הלר
+Rabinowitz,Moshe,9100263,6_1,משה,רבינוביץ
+Friedman,Chaim,9100264,6_1,חיים,פרידמן
+Cohen,Zalman,9100265,6_1,שניאור זלמן,כהן
+Friedman,Avraham,9100266,6_1,אברהם,פרידמן
+Heller,Tzvi,9100267,6_1,צבי,הלר
+Eisenberg,Dovid,9100268,6_1,דוד,אייזנברג
+Brook,Noson,9100269,6_1,נתן,ברוק
+Heller,Dovid,9100270,6_1,דוד,הלר
+Goldberg,Noson,9100271,6_1,נתן,גולדברג
+Cohen,Eli,9100272,6_1,אליהו,כהן
+Tenenbaum,Levi,9100273,6_1,לוי יצחק,טננבוים
+Heller,Chaim,9100274,6_1,חיים,הלר
+Shapiro,Yaakov,9100275,6_1,יעקב,שפירא
+Silber,Moshe,9100276,6_2,משה,זילבר
+Brook,Yisroel,9100277,6_2,ישראל,ברוק
+Rabinowitz,Dovid,9100278,6_2,דוד,רבינוביץ
+Levi,Zalman,9100279,6_2,שניאור זלמן,לוי
+Kaplan,Yosef,9100280,6_2,יוסף,קפלן
+Green,Boruch,9100281,6_2,ברוך,גרין
+Green,Avraham,9100282,6_2,אברהם,גרין
+Kaplan,Shmuel,9100283,6_2,שמואל,קפלן
+Adler,Zalman,9100284,6_2,שניאור זלמן,אדלר
+Rabinowitz,Shmuel,9100285,6_2,שמואל,רבינוביץ
+Rosen,Zalman,9100286,6_2,שניאור זלמן,רוזן
+Cohen,Tzvi,9100287,6_2,צבי,כהן
+Levi,Zalman,9100288,6_2,שניאור זלמן,לוי
+Cohen,Moshe,9100289,6_2,משה,כהן
+Silber,Yisroel,9100290,6_2,ישראל,זילבר
+Kaplan,Shmuel,9100291,6_2,שמואל,קפלן
+Blum,Shmuel,9100292,6_2,שמואל,בלום
+Adler,Mendel,9100293,6_2,מנחם מענדל,אדלר
+Klein,Dovid,9100294,6_2,דוד,קליין
+Blum,Avraham,9100295,6_2,אברהם,בלום
+Stern,Shmuel,9100296,6_2,שמואל,שטרן
+Green,Shmuel,9100297,6_2,שמואל,גרין
+Kaplan,Yisroel,9100298,6_2,ישראל,קפלן
+Weiss,Mendel,9100299,6_2,מנחם מענדל,וייס
+Shapiro,Mendel,9100300,6_2,מנחם מענדל,שפירא
+Rosen,Chaim,9100301,6_3,חיים,רוזן
+Shapiro,Moshe,9100302,6_3,משה,שפירא
+Friedman,Moshe,9100303,6_3,משה,פרידמן
+Heller,Avraham,9100304,6_3,אברהם,הלר
+Rabinowitz,Chaim,9100305,6_3,חיים,רבינוביץ
+Friedman,Moshe,9100306,6_3,משה,פרידמן
+Stern,Avraham,9100307,6_3,אברהם,שטרן
+Silber,Noson,9100308,6_3,נתן,זילבר
+Green,Avraham,9100309,6_3,אברהם,גרין
+Brook,Yaakov,9100310,6_3,יעקב,ברוק
+Green,Yisroel,9100311,6_3,ישראל,גרין
+Adler,Moshe,9100312,6_3,משה,אדלר
+Rabinowitz,Yosef,9100313,6_3,יוסף,רבינוביץ
+Adler,Zalman,9100314,6_3,שניאור זלמן,אדלר
+Heller,Moshe,9100315,6_3,משה,הלר
+Weiss,Levi,9100316,6_3,לוי יצחק,וייס
+Weiss,Shmuel,9100317,6_3,שמואל,וייס
+Levi,Mendel,9100318,6_3,מנחם מענדל,לוי
+Green,Boruch,9100319,6_3,ברוך,גרין
+Rosen,Mendel,9100320,6_3,מנחם מענדל,רוזן
+Cohen,Yosef,9100321,6_3,יוסף,כהן
+Stern,Levi,9100322,6_3,לוי יצחק,שטרן
+Blum,Dovid,9100323,6_3,דוד,בלום
+Silber,Zalman,9100324,6_3,שניאור זלמן,זילבר
+Kaplan,Avraham,9100325,6_3,אברהם,קפלן
+Silber,Mendel,9100326,6_4,מנחם מענדל,זילבר
+Cohen,Tzvi,9100327,6_4,צבי,כהן
+Heller,Dovid,9100328,6_4,דוד,הלר
+Friedman,Noson,9100329,6_4,נתן,פרידמן
+Stern,Yosef,9100330,6_4,יוסף,שטרן
+Levi,Yaakov,9100331,6_4,יעקב,לוי
+Cohen,Chaim,9100332,6_4,חיים,כהן
+Green,Zalman,9100333,6_4,שניאור זלמן,גרין
+Brook,Avraham,9100334,6_4,אברהם,ברוק
+Margolis,Dovid,9100335,6_4,דוד,מרגליות
+Shapiro,Shmuel,9100336,6_4,שמואל,שפירא
+Eisenberg,Avraham,9100337,6_4,אברהם,אייזנברג
+Weiss,Chaim,9100338,6_4,חיים,וייס
+Blum,Yisroel,9100339,6_4,ישראל,בלום
+Green,Yosef,9100340,6_4,יוסף,גרין
+Eisenberg,Yisroel,9100341,6_4,ישראל,אייזנברג
+Shapiro,Avraham,9100342,6_4,אברהם,שפירא
+Silber,Moshe,9100343,6_4,משה,זילבר
+Klein,Avraham,9100344,6_4,אברהם,קליין
+Silber,Yisroel,9100345,6_4,ישראל,זילבר
+Silber,Yosef,9100346,6_4,יוסף,זילבר
+Silber,Tzvi,9100347,6_4,צבי,זילבר
+Cohen,Yaakov,9100348,6_4,יעקב,כהן
+Margolis,Noson,9100349,6_4,נתן,מרגליות
+Brook,Tzvi,9100350,6_4,צבי,ברוק
+Cohen,Dovid,9100351,6_5,דוד,כהן
+Shapiro,Moshe,9100352,6_5,משה,שפירא
+Rosen,Avraham,9100353,6_5,אברהם,רוזן
+Stern,Dovid,9100354,6_5,דוד,שטרן
+Adler,Noson,9100355,6_5,נתן,אדלר
+Levi,Shmuel,9100356,6_5,שמואל,לוי
+Cohen,Avraham,9100357,6_5,אברהם,כהן
+Tenenbaum,Avraham,9100358,6_5,אברהם,טננבוים
+Brook,Avraham,9100359,6_5,אברהם,ברוק
+Heller,Eli,9100360,6_5,אליהו,הלר
+Adler,Moshe,9100361,6_5,משה,אדלר
+Friedman,Tzvi,9100362,6_5,צבי,פרידמן
+Silber,Yisroel,9100363,6_5,ישראל,זילבר
+Tenenbaum,Boruch,9100364,6_5,ברוך,טננבוים
+Silber,Dovid,9100365,6_5,דוד,זילבר
+Blum,Dovid,9100366,6_5,דוד,בלום
+Friedman,Zalman,9100367,6_5,שניאור זלמן,פרידמן
+Heller,Noson,9100368,6_5,נתן,הלר
+Kaplan,Mendel,9100369,6_5,מנחם מענדל,קפלן
+Adler,Mendel,9100370,6_5,מנחם מענדל,אדלר
+Stern,Eli,9100371,6_5,אליהו,שטרן
+Blum,Dovid,9100372,6_5,דוד,בלום
+Green,Boruch,9100373,6_5,ברוך,גרין
+Levi,Tzvi,9100374,6_5,צבי,לוי
+Kaplan,Yaakov,9100375,6_5,יעקב,קפלן

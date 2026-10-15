@@ -24,46 +24,24 @@
   document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
 
   // ---------------- Roster ----------------
-  // The original roster: data/roster.csv (read fresh on the website; built-in copy when opened from a file).
-  async function originalRosterCsv() {
-    if (location.protocol.startsWith('http')) {
-      try {
-        const res = await fetch('data/roster.csv', { cache: 'no-cache' });
-        if (res.ok) return res.text();
-      } catch (e) { /* use the built-in copy */ }
-    }
-    return window.MILLIM_ROSTER_CSV || '';
-  }
-
   /*
-   * Where the roster lives:
-   *  - Signed in: in your account (Firebase). The very first time, the original roster
-   *    (data/roster.csv) is copied into your account; after that, the account copy is the only roster.
-   *  - Not signed in (e.g. opened from a file): in this browser, starting from the original.
+   * The roster lives in your account (Firebase) when signed in, or in this browser when not.
+   * If there isn't one yet, the Roster tab asks for a CSV file.
    */
   async function loadRoster() {
     const cloud = M.dataStore.mode() === 'cloud';
     let saved = null, loadFailed = false;
     try { saved = await M.dataStore.getRoster(); } catch (err) { console.error(err); loadFailed = true; }
-    let csv;
     if (saved && saved.csv) {
-      csv = saved.csv;
       state.rosterSource = (cloud ? 'saved in your account' : 'saved in this browser') +
         (saved.updatedAt ? ' (last changed ' + new Date(saved.updatedAt).toLocaleDateString() + ')' : '');
+    } else if (loadFailed) {
+      state.rosterSource = 'could not reach your account to load the roster — check the internet connection and reload the page';
     } else {
-      csv = await originalRosterCsv();
-      state.rosterSource = cloud ? 'from data/roster.csv' : 'the starting roster (data/roster.csv)';
-      // First sign-in: copy the roster into the account. (Never when loading failed, e.g. offline —
-      // that could overwrite a roster the account already has.)
-      if (cloud && !loadFailed && M.roster.fromCsv(csv).students.length) {
-        try {
-          await M.dataStore.saveRoster(csv, 'data/roster.csv');
-          state.rosterSource = 'saved in your account (copied from data/roster.csv just now)';
-        } catch (err) { console.error(err); }
-      }
+      state.rosterSource = 'no roster yet — click "Replace the whole roster from a CSV file" to load your class list';
     }
-    if (loadFailed) state.rosterSource += ' — could not reach your account, so this may not be your latest roster';
-    state.roster = M.roster.fromCsv(csv);
+    state.roster = M.roster.fromCsv(saved && saved.csv ? saved.csv : '');
+    if (!state.roster.students.length) state.roster.problems = [];
     // Share the roster with the other screens (e.g. Grade scans, Results).
     M.currentRoster = state.roster;
     document.dispatchEvent(new CustomEvent('millim:roster'));
