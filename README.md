@@ -64,17 +64,18 @@ copy of your data kept on that computer. Forgot your password? Type your email a
 
 ## Updating the roster
 
+The roster lives **in your account** (Firebase), so every computer you sign in on has the same, latest list.
+(The first time you signed in, the app copied `data/roster.csv` from this project into your account.)
+
 Everything is done in the **Roster** tab:
 - **+ Add a student** — Hebrew and English names, 7-digit ID, class (or a new class like `4_6`).
 - **Edit** (next to each student) — fix a name, move to another class, change the ID, or **remove** a student who left.
 - **Replace the whole roster from a CSV file** — e.g. a new list at the start of the year
   (columns: `Last Name, First Name, Zipgrade ID, Class, Hebrew First Name, Hebrew Last Name`).
-- **Download the roster (CSV)** — opens in Excel with Hebrew names.
-- **Undo all my changes** — go back to the original roster.
+- **Download the roster (CSV)** — opens in Excel with Hebrew names; also a handy backup.
 
-Changes are saved to your account (so they appear on every computer you sign in on), or in the browser if you're
-not signed in. The original roster is `data/roster.csv` in this project; the app uses it until you make a change.
 Saved quiz results are kept when a student is removed or moved.
+Without an account (a downloaded copy opened from a file), the roster is kept in that browser instead.
 
 ## How the project is organized
 
