@@ -133,7 +133,8 @@ They check, among other things:
 - computer-filled sheets of other layouts (6 choices, Hebrew letters, 100 questions, pre-filled) read correctly.
 
 To add more test scans, fill in the test packet again (`test-sheets/test-packet.pdf`) and upload the PDF to `test-scans/`.
-To run them yourself (developers): `npm test` (needs Node.js 22+; `pdftoppm` from poppler for the PDF checks).
+Before committing a change to the app, run `node tools/stamp-version.js` (gives every file a new version tag so browsers
+fetch fresh copies; a test checks this). To run the tests yourself (developers): `npm test` (needs Node.js 22+; `pdftoppm` from poppler for the PDF checks).
 
 ## Guides
 
