@@ -13,7 +13,7 @@ Sign in from any computer to see all your quizzes and results.
 
 ## How to open the app
 
-**From the website (recommended):** open **https://rabbilengel.github.io/Millim-Scanner/** on any computer,
+**From the website (recommended):** open **https://millim-scanner.vercel.app** on any computer,
 tablet or phone, and sign in with your email and password. Your quizzes and results are saved to your account.
 
 **From a downloaded copy (works without internet, but no account — results stay in that browser):**
@@ -137,7 +137,8 @@ fetch fresh copies; a test checks this). To run the tests yourself (developers):
 ## Guides
 
 - [Getting Claude's changes into your main branch](docs/merging-changes.md)
-- [Turning on GitHub Pages](docs/github-pages.md)
+- [Where the app is published (Vercel), and how updates go live](docs/vercel.md)
+- [Turning on GitHub Pages (the older, spare address)](docs/github-pages.md)
 - [Setting up your online account (Firebase)](docs/firebase-setup.md)
 
 ## Privacy

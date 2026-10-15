@@ -15,4 +15,5 @@ Your real version is the **main** branch. To bring the changes in:
 
 Tip: you can ask Claude to open the pull request for you, so you only need steps 4–5.
 
-If GitHub Pages is on, the website updates by itself a minute or two after you merge.
+The website (millim-scanner.vercel.app) updates by itself about a minute after you merge.
+Before merging, you can try the change on the "Visit Preview" link Vercel adds to the pull request.

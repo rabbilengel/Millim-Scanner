@@ -52,7 +52,8 @@ You're now on the project's home page ("Project Overview").
    one is better) → **Add user**. This is the login you'll use in the app.
 4. **Settings** tab → **User actions** → **untick "Enable create (sign-up)"** → **Save**.
    This stops anyone else from creating an account in your project.
-5. Still in **Settings** → **Authorized domains** → **Add domain** → type `rabbilengel.github.io` → **Add**.
+5. Still in **Settings** → **Authorized domains** → **Add domain** → type the app's address without `https://`
+   (`millim-scanner.vercel.app`) → **Add**. Add every address you open the app from.
 
 ## 4. Create the database
 
@@ -83,7 +84,7 @@ You're now on the project's home page ("Project Overview").
 ## 6. Tell Claude
 
 Paste the `firebaseConfig` from step 2 into the chat. Claude will connect the app to your project.
-Then, after you merge the change, open **https://rabbilengel.github.io/Millim-Scanner/** and sign in with the
+Then, after you merge the change, open **https://millim-scanner.vercel.app** and sign in with the
 email and password from step 3.
 
 ---
