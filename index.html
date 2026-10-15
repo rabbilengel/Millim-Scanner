@@ -6,7 +6,24 @@
   <!-- Privacy: this page may only talk to its own website and Google Firebase (your account). -->
   <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://*.googleapis.com http://127.0.0.1:* http://localhost:*; form-action 'none'">
   <title>Millim Scanner</title>
-  <link rel="stylesheet" href="app/css/style.css">
+  <script>
+    // If a part of the app fails to load (usually an old copy kept by the browser after an update),
+    // say so plainly instead of leaving the page stuck on "Loading…".
+    window.addEventListener('error', function (e) {
+      if (document.getElementById('load-error')) return;
+      var show = function () {
+        var box = document.createElement('div');
+        box.id = 'load-error';
+        box.setAttribute('role', 'alert');
+        box.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:99;padding:12px 18px;background:#b42318;color:#fff;font:15px system-ui,sans-serif;text-align:center';
+        box.textContent = 'Part of the app did not load correctly (often an old copy kept by the browser after an update). ' +
+          'Press Ctrl+F5 (or Ctrl+Shift+R) to reload. If this keeps happening, tell Claude: ' + (e.message || 'a file failed to load');
+        document.body.appendChild(box);
+      };
+      if (document.body) show(); else document.addEventListener('DOMContentLoaded', show);
+    }, true);
+  </script>
+  <link rel="stylesheet" href="app/css/style.css?v=202610151604">
 </head>
 <body>
   <!-- Sign in (only when online accounts are set up) -->
@@ -391,39 +408,39 @@
   </footer>
 
   <!-- Tools stored inside the project (nothing is loaded from the internet) -->
-  <script src="app/vendor/pdf-lib.min.js"></script>
-  <script src="app/vendor/fontkit.umd.min.js"></script>
-  <script src="app/vendor/heebo-font.js"></script>
+  <script src="app/vendor/pdf-lib.min.js?v=202610151604"></script>
+  <script src="app/vendor/fontkit.umd.min.js?v=202610151604"></script>
+  <script src="app/vendor/heebo-font.js?v=202610151604"></script>
   <!-- The roster, built from data/roster.csv -->
-  <script src="app/data/roster-data.js"></script>
+  <script src="app/data/roster-data.js?v=202610151604"></script>
   <!-- The app -->
-  <script src="app/js/hebrew.js"></script>
-  <script src="app/js/roster.js"></script>
-  <script src="app/js/sheet-layout.js"></script>
-  <script src="app/js/sheet-pdf.js"></script>
-  <script src="app/js/test-sheets.js"></script>
-  <script src="app/js/storage.js"></script>
-  <script src="app/js/ui-util.js"></script>
+  <script src="app/js/hebrew.js?v=202610151604"></script>
+  <script src="app/js/roster.js?v=202610151604"></script>
+  <script src="app/js/sheet-layout.js?v=202610151604"></script>
+  <script src="app/js/sheet-pdf.js?v=202610151604"></script>
+  <script src="app/js/test-sheets.js?v=202610151604"></script>
+  <script src="app/js/storage.js?v=202610151604"></script>
+  <script src="app/js/ui-util.js?v=202610151604"></script>
   <!-- Online accounts (Google Firebase) -->
-  <script src="app/vendor/firebase-app-compat.js"></script>
-  <script src="app/vendor/firebase-auth-compat.js"></script>
-  <script src="app/vendor/firebase-firestore-compat.js"></script>
-  <script src="app/js/firebase-config.js"></script>
-  <script src="app/js/cloud.js"></script>
-  <script src="app/js/data-store.js"></script>
+  <script src="app/vendor/firebase-app-compat.js?v=202610151604"></script>
+  <script src="app/vendor/firebase-auth-compat.js?v=202610151604"></script>
+  <script src="app/vendor/firebase-firestore-compat.js?v=202610151604"></script>
+  <script src="app/js/firebase-config.js?v=202610151604"></script>
+  <script src="app/js/cloud.js?v=202610151604"></script>
+  <script src="app/js/data-store.js?v=202610151604"></script>
   <!-- The scan reader -->
-  <script src="app/vendor/pdf.min.js"></script>
-  <script src="app/js/reader/image.js"></script>
-  <script src="app/js/reader/homography.js"></script>
-  <script src="app/js/reader/find-sheet.js"></script>
-  <script src="app/js/reader/read-sheet.js"></script>
-  <script src="app/js/grading.js"></script>
-  <script src="app/js/results.js"></script>
-  <script src="app/js/key-grid.js"></script>
-  <script src="app/js/scan-input.js"></script>
-  <script src="app/js/app.js"></script>
-  <script src="app/js/grade-ui.js"></script>
-  <script src="app/js/results-ui.js"></script>
-  <script src="app/js/account-ui.js"></script>
+  <script src="app/vendor/pdf.min.js?v=202610151604"></script>
+  <script src="app/js/reader/image.js?v=202610151604"></script>
+  <script src="app/js/reader/homography.js?v=202610151604"></script>
+  <script src="app/js/reader/find-sheet.js?v=202610151604"></script>
+  <script src="app/js/reader/read-sheet.js?v=202610151604"></script>
+  <script src="app/js/grading.js?v=202610151604"></script>
+  <script src="app/js/results.js?v=202610151604"></script>
+  <script src="app/js/key-grid.js?v=202610151604"></script>
+  <script src="app/js/scan-input.js?v=202610151604"></script>
+  <script src="app/js/app.js?v=202610151604"></script>
+  <script src="app/js/grade-ui.js?v=202610151604"></script>
+  <script src="app/js/results-ui.js?v=202610151604"></script>
+  <script src="app/js/account-ui.js?v=202610151604"></script>
 </body>
 </html>
