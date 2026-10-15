@@ -61,3 +61,46 @@ test('CSV writer and reader agree', () => {
   const rows = [['a', 'b,c', 'd"e'], ['שלום', '', 'x\ny']];
   assert.deepStrictEqual(R.parseCsv(R.toCsv(rows)), rows);
 });
+
+// ---------- Editing the roster in the app ----------
+
+test('adding, editing and removing a student', () => {
+  const roster = R.fromCsv(SAMPLE);
+  // add
+  const added = R.fromCsv(R.csvWithStudent(roster, { id: '1000009', hebFirst: 'יוסף', hebLast: 'בלום', firstName: 'Yosef', lastName: 'Blum', classCode: '4_2' }, null));
+  assert.strictEqual(added.students.length, 5);
+  assert.deepStrictEqual(R.studentsInClass(added, '4_2').map((s) => s.hebLast), ['אדלר', 'בלום', 'כהן', 'לוי']);
+  // edit: move Levi to another class and fix his name
+  const levi = R.findById(added, '1000001');
+  const moved = R.fromCsv(R.csvWithStudent(added, Object.assign({}, levi, { classCode: '5_1', hebFirst: 'דוד צבי' }), '1000001'));
+  assert.strictEqual(moved.students.length, 5);
+  assert.strictEqual(R.findById(moved, '1000001').classCode, '5_1');
+  assert.strictEqual(R.findById(moved, '1000001').hebFirst, 'דוד צבי');
+  // edit: change an ID (the old one disappears)
+  const renumbered = R.fromCsv(R.csvWithStudent(moved, Object.assign({}, R.findById(moved, '1000004'), { id: '1000044' }), '1000004'));
+  assert.strictEqual(R.findById(renumbered, '1000004'), null);
+  assert.strictEqual(R.findById(renumbered, '1000044').hebLast, 'בראון');
+  // remove
+  const removed = R.fromCsv(R.csvWithoutStudent(renumbered, '1000003'));
+  assert.strictEqual(removed.students.length, 4);
+  assert.deepStrictEqual(removed.problems, []);
+});
+
+test('student checks: ID format, duplicate ID, class format, names', () => {
+  const roster = R.fromCsv(SAMPLE);
+  const ok = { id: '1000009', hebFirst: 'א', hebLast: 'ב', firstName: '', lastName: '', classCode: '4_6' };
+  assert.deepStrictEqual(R.checkStudent(roster, ok, null), []);
+  assert.match(R.checkStudent(roster, Object.assign({}, ok, { id: '12345' }), null).join(' '), /exactly 7 digits/);
+  assert.match(R.checkStudent(roster, Object.assign({}, ok, { id: '1000001' }), null).join(' '), /already belongs to דוד לוי/);
+  // keeping your own ID while editing is fine
+  assert.deepStrictEqual(R.checkStudent(roster, Object.assign({}, ok, { id: '1000001' }), '1000001'), []);
+  assert.match(R.checkStudent(roster, Object.assign({}, ok, { classCode: '4-6' }), null).join(' '), /like 4_1/);
+  assert.match(R.checkStudent(roster, Object.assign({}, ok, { hebLast: '' }), null).join(' '), /first and last name/);
+});
+
+test('the real roster survives being written back out unchanged', () => {
+  const roster = R.fromCsv(fs.readFileSync(csvPath, 'utf8'));
+  const again = R.fromCsv(R.studentsToCsv(roster.students));
+  assert.strictEqual(again.students.length, roster.students.length);
+  for (const s of roster.students) assert.deepStrictEqual(R.findById(again, s.id), s);
+});

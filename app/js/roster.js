@@ -154,8 +154,48 @@
     return roster.students.find((s) => s.id === String(id)) || null;
   }
 
+  // ---------- Editing ----------
+  const CSV_HEADER = ['Last Name', 'First Name', 'Zipgrade ID', 'Class', 'Hebrew First Name', 'Hebrew Last Name'];
+
+  // Students -> roster CSV text (same columns as the original file).
+  function studentsToCsv(students) {
+    const sorted = students.slice().sort((a, b) => compareClassCodes(a.classCode, b.classCode) || compareStudents(a, b));
+    return toCsv([CSV_HEADER].concat(sorted.map((s) => [s.lastName, s.firstName, s.id, s.classCode, s.hebFirst, s.hebLast])));
+  }
+
+  /*
+   * Check a student before saving. originalId = the student's ID before editing (null for a new student).
+   * Returns a list of problems in plain words (empty = OK).
+   */
+  function checkStudent(roster, s, originalId) {
+    const problems = [];
+    if (!new RegExp('^\\d{' + ID_LENGTH + '}$').test(s.id || '')) problems.push('The ID must be exactly ' + ID_LENGTH + ' digits.');
+    else if (s.id !== originalId && findById(roster, s.id)) {
+      const other = findById(roster, s.id);
+      problems.push('ID ' + s.id + ' already belongs to ' + ([other.hebFirst, other.hebLast].join(' ').trim() || other.firstName + ' ' + other.lastName) + '.');
+    }
+    if (!H.parseClassCode(s.classCode)) problems.push('Class must look like 4_1 (grade, underscore, class number).');
+    if (!(s.hebFirst || s.firstName) || !(s.hebLast || s.lastName)) problems.push('Type at least a first and last name (Hebrew or English).');
+    return problems;
+  }
+
+  // Add or replace one student (originalId = the ID before editing, or null) -> new roster CSV text
+  function csvWithStudent(roster, s, originalId) {
+    const others = roster.students.filter((x) => x.id !== originalId && x.id !== s.id);
+    return studentsToCsv(others.concat([s]));
+  }
+
+  function csvWithoutStudent(roster, id) {
+    return studentsToCsv(roster.students.filter((x) => x.id !== id));
+  }
+
   M.roster = {
     ID_LENGTH,
+    studentsToCsv,
+    checkStudent,
+    csvWithStudent,
+    csvWithoutStudent,
+    compareClassCodes,
     parseCsv,
     toCsv,
     fromCsv,
