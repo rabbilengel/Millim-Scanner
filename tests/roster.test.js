@@ -6,9 +6,10 @@ const path = require('path');
 const M = require('../tools/load-app');
 const R = M.roster;
 
-const csvPath = path.join(__dirname, '..', 'data', 'roster.csv');
+// A made-up roster (no real students) in the same format as the real one.
+const csvPath = path.join(__dirname, 'fixtures', 'sample-roster.csv');
 
-test('the real roster loads with no problems', () => {
+test('a full roster file loads with no problems', () => {
   const roster = R.fromCsv(fs.readFileSync(csvPath, 'utf8'));
   assert.deepStrictEqual(roster.problems, []);
   assert.ok(roster.students.length > 0);
@@ -16,12 +17,6 @@ test('the real roster loads with no problems', () => {
     assert.match(s.id, /^\d{7}$/);
     assert.ok(s.grade && s.classNum, 'class code ' + s.classCode);
   }
-});
-
-test('the copy of the roster built into the app matches data/roster.csv', () => {
-  // If this fails: run  node tools/build-roster-data.js
-  const { build, outPath } = require('../tools/build-roster-data');
-  assert.strictEqual(fs.readFileSync(outPath, 'utf8'), build());
 });
 
 const SAMPLE = [
@@ -98,7 +93,7 @@ test('student checks: ID format, duplicate ID, class format, names', () => {
   assert.match(R.checkStudent(roster, Object.assign({}, ok, { hebLast: '' }), null).join(' '), /first and last name/);
 });
 
-test('the real roster survives being written back out unchanged', () => {
+test('a full roster survives being written back out unchanged', () => {
   const roster = R.fromCsv(fs.readFileSync(csvPath, 'utf8'));
   const again = R.fromCsv(R.studentsToCsv(roster.students));
   assert.strictEqual(again.students.length, roster.students.length);

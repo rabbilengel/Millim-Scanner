@@ -124,7 +124,7 @@ test('blank sheets: the PDF matches the layout map', { skip }, async () => {
 });
 
 test('pre-filled sheets: one page per student, ID bubbles filled in', { skip }, async () => {
-  const roster = M.roster.fromCsv(fs.readFileSync(path.join(__dirname, '..', 'data', 'roster.csv'), 'utf8'));
+  const roster = M.roster.fromCsv(fs.readFileSync(path.join(__dirname, 'fixtures', 'sample-roster.csv'), 'utf8'));
   const students = M.roster.studentsInClass(roster, roster.classes[0]).slice(0, 3);
   const quiz = { title: 'Pre-filled', numQuestions: 20, choiceStyle: 'letters', defaultChoices: 4 };
   const pages = renderPages(await M.sheetPdf.create({ quiz, students }));
@@ -139,7 +139,7 @@ test('test packet: instruction page + sheets A, B, C', { skip }, async () => {
 });
 
 test('a whole grade (about 125 sheets) is created quickly', async () => {
-  const roster = M.roster.fromCsv(fs.readFileSync(path.join(__dirname, '..', 'data', 'roster.csv'), 'utf8'));
+  const roster = M.roster.fromCsv(fs.readFileSync(path.join(__dirname, 'fixtures', 'sample-roster.csv'), 'utf8'));
   const grade = M.roster.gradesOf(roster)[0];
   const students = M.roster.studentsInGrade(roster, grade);
   const started = Date.now();

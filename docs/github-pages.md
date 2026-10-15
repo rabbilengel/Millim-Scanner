@@ -8,7 +8,8 @@ GitHub Pages turns the repository into a website, so you can open the app from a
 2. Scroll to the very bottom, to **Danger Zone**.
 3. Click **Change visibility** → **Change to public**, and confirm (GitHub may ask you to type the repository name).
 
-Remember: once it's public, anyone on the internet can see the files, including `data/roster.csv`.
+Remember: once it's public, anyone on the internet can see the project's files. (Your roster and results are
+not in the project — they're in your private Firebase account.)
 
 ## 2. Turn on Pages
 
