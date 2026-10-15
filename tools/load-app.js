@@ -14,7 +14,7 @@ require(path.join(appDir, 'vendor', 'heebo-font.js'));
 for (const file of [
   'hebrew.js', 'roster.js', 'sheet-layout.js', 'sheet-pdf.js', 'test-sheets.js',
   'reader/image.js', 'reader/homography.js', 'reader/find-sheet.js', 'reader/read-sheet.js',
-  'grading.js',
+  'grading.js', 'results.js',
 ]) {
   require(path.join(appDir, 'js', file));
 }

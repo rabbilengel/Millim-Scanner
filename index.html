@@ -3,20 +3,50 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Privacy: this page may not send data to any other website. -->
-  <meta http-equiv="Content-Security-Policy" content="connect-src 'self'; form-action 'none'">
+  <!-- Privacy: this page may only talk to its own website and Google Firebase (your account). -->
+  <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://*.googleapis.com http://127.0.0.1:* http://localhost:*; form-action 'none'">
   <title>Millim Scanner</title>
   <link rel="stylesheet" href="app/css/style.css">
 </head>
 <body>
+  <!-- Sign in (only when online accounts are set up) -->
+  <div id="signin" class="signin" hidden>
+    <form id="signin-form" class="signin-card" autocomplete="on">
+      <h1>Millim Scanner</h1>
+      <p class="muted">Sign in to see your quizzes and results.</p>
+      <label class="field">
+        <span>Email</span>
+        <input id="signin-email" type="email" autocomplete="username" required dir="ltr">
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input id="signin-password" type="password" autocomplete="current-password" required dir="ltr">
+      </label>
+      <label class="option-inline">
+        <input id="signin-remember" type="checkbox" checked>
+        Keep me signed in on this computer
+      </label>
+      <p class="hint">On a shared computer, untick this, or click "Sign out" when you're done.</p>
+      <div class="actions">
+        <button type="submit" id="signin-button" class="primary">Sign in</button>
+        <button type="button" id="signin-forgot" class="link-button">Forgot password?</button>
+      </div>
+      <p id="signin-message" class="status" role="status"></p>
+    </form>
+  </div>
+
   <header class="topbar">
     <h1>Millim Scanner</h1>
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="sheets">Answer sheets</button>
       <button class="tab" role="tab" data-tab="roster">Roster</button>
       <button class="tab" role="tab" data-tab="grade">Grade scans</button>
-      <button class="tab" role="tab" data-tab="results" disabled title="Coming in Phase 3">Results</button>
+      <button class="tab" role="tab" data-tab="results">Results</button>
     </nav>
+    <div id="account" class="account" hidden>
+      <span id="account-email"></span>
+      <button type="button" id="sign-out" class="link-button">Sign out</button>
+    </div>
   </header>
 
   <main>
@@ -232,10 +262,82 @@
         </div>
       </div>
     </section>
+
+    <!-- ================= RESULTS ================= -->
+    <section id="tab-results" class="panel" hidden>
+      <div id="res-local-banner" class="card banner" hidden>
+        <span id="res-local-text"></span>
+        <button type="button" id="res-local-upload" class="primary">Upload them to my account</button>
+      </div>
+
+      <div class="card">
+        <h2>Results</h2>
+        <label class="field">
+          <span>Quiz</span>
+          <select id="res-quiz"></select>
+        </label>
+        <p id="res-empty" class="muted">No saved results yet. Grade some scans on the Grade scans tab and click "Save results".</p>
+      </div>
+
+      <div id="res-body" class="card" hidden>
+        <div id="res-stats" class="stats"></div>
+        <div id="res-class-picker" class="class-picker"></div>
+        <div class="subtabs" role="tablist">
+          <button type="button" class="subtab" data-sub="students">Students</button>
+          <button type="button" class="subtab" data-sub="items">Item analysis</button>
+          <button type="button" class="subtab" data-sub="key">Answer key</button>
+        </div>
+
+        <div id="res-students" class="subpanel">
+          <p class="hint">Click a student to see their answers. Wrong answers are shown in red.</p>
+          <div class="table-wrap">
+            <table id="res-students-table" class="roster-table results-table" dir="rtl"></table>
+          </div>
+        </div>
+
+        <div id="res-items" class="subpanel" hidden>
+          <p class="hint">How many students chose each answer. Green = correct answer; orange = the most-chosen wrong answer.
+            Questions most students got wrong are highlighted — worth reviewing in class.</p>
+          <div class="table-wrap">
+            <table id="res-items-table" class="items-table"></table>
+          </div>
+        </div>
+
+        <div id="res-key" class="subpanel" hidden>
+          <p class="hint">Changing the answer key re-scores every student right away
+            (for example, to accept a second answer or drop a bad question).</p>
+          <label class="field">
+            <span>Quiz name</span>
+            <input id="res-key-title" type="text" dir="auto" maxlength="80">
+          </label>
+          <div id="res-key-grid"></div>
+          <p id="res-key-status" class="status" role="status"></p>
+          <button type="button" id="res-delete-quiz" class="link-button danger">Delete this quiz and all its results…</button>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="res-export">Download results as CSV</button>
+          <button type="button" id="res-export-items">Download item analysis as CSV</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Backup</h2>
+        <p>A backup file holds all your quizzes, answer keys and results. Keep it somewhere safe; you can load it back on any computer.</p>
+        <div class="actions">
+          <button type="button" id="backup-download">Download backup file</button>
+          <label class="button">
+            Restore from a backup file…
+            <input id="backup-restore" type="file" accept=".json,application/json" hidden>
+          </label>
+          <span id="backup-status" class="status" role="status"></span>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
-    Everything runs in this browser window. Student data never leaves your computer.
+    <span id="footer-mode">Everything runs in this browser window. Results are saved in this browser only.</span>
   </footer>
 
   <!-- Tools stored inside the project (nothing is loaded from the internet) -->
@@ -251,6 +353,14 @@
   <script src="app/js/sheet-pdf.js"></script>
   <script src="app/js/test-sheets.js"></script>
   <script src="app/js/storage.js"></script>
+  <script src="app/js/ui-util.js"></script>
+  <!-- Online accounts (Google Firebase) -->
+  <script src="app/vendor/firebase-app-compat.js"></script>
+  <script src="app/vendor/firebase-auth-compat.js"></script>
+  <script src="app/vendor/firebase-firestore-compat.js"></script>
+  <script src="app/js/firebase-config.js"></script>
+  <script src="app/js/cloud.js"></script>
+  <script src="app/js/data-store.js"></script>
   <!-- The scan reader -->
   <script src="app/vendor/pdf.min.js"></script>
   <script src="app/js/reader/image.js"></script>
@@ -258,8 +368,12 @@
   <script src="app/js/reader/find-sheet.js"></script>
   <script src="app/js/reader/read-sheet.js"></script>
   <script src="app/js/grading.js"></script>
+  <script src="app/js/results.js"></script>
+  <script src="app/js/key-grid.js"></script>
   <script src="app/js/scan-input.js"></script>
   <script src="app/js/app.js"></script>
   <script src="app/js/grade-ui.js"></script>
+  <script src="app/js/results-ui.js"></script>
+  <script src="app/js/account-ui.js"></script>
 </body>
 </html>

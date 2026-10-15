@@ -34,13 +34,14 @@
   const hebName = (s) => [s.hebFirst, s.hebLast].filter(Boolean).join(' ') || s.firstName + ' ' + s.lastName;
 
   // ---------------- saved answer keys ----------------
-  function savedKeys() { return M.storage.load('quizzes', []); }
-  function saveKey(key) {
-    key.updatedAt = Date.now();
-    const keys = savedKeys().filter((k) => k.id !== key.id);
-    keys.unshift(key);
-    M.storage.save('quizzes', keys);
-  }
+  const D = M.dataStore;
+  function savedKeys() { return D.quizzes(); }
+  // Save the key a moment after the last change (so clicking through a key isn't dozens of uploads).
+  // A brand-new key with no name and no answers isn't worth saving yet.
+  const saveKeySoon = M.ui.debounce(() => {
+    const key = session.key;
+    if (key && (key.title || key.answers.some((a) => a.length))) return D.saveQuiz(key);
+  }, 800);
 
   // ---------------- 1. Reading scans ----------------
   $('scan-files').addEventListener('change', async (e) => {
@@ -126,8 +127,9 @@
     if (!layout) return;
     if (!G.sameLayout(layout, session.layout)) {
       session.layout = layout;
-      const match = savedKeys().find((k) => G.sameLayout(k.layout, layout));
-      session.key = match || G.newKey(layout, '');
+      // Start with a fresh key; the teacher can pick a saved one from the list.
+      // (Picking one automatically could silently grade with the wrong quiz's answers.)
+      session.key = G.newKey(layout, '');
     }
   }
 
@@ -137,44 +139,29 @@
     card.hidden = !session.layout;
     if (!session.layout) return;
     const key = session.key, layout = session.layout;
-    const style = M.sheetLayout.CHOICE_STYLES[layout.choiceStyle];
     $('key-layout').textContent = 'Sheet layout (read from the scans): ' + layout.numQuestions + ' questions, choices ' + G.labelsFor(layout).join(' ') + '.';
     $('key-title').value = key.title || '';
 
-    const sel = $('key-saved');
-    sel.innerHTML = '';
-    sel.add(new Option('— New answer key —', ''));
-    savedKeys().filter((k) => G.sameLayout(k.layout, layout)).forEach((k) => {
-      sel.add(new Option((k.title || 'Untitled') + '  (' + new Date(k.updatedAt).toLocaleDateString() + ')', k.id));
-    });
-    sel.value = savedKeys().some((k) => k.id === key.id) ? key.id : '';
-
-    const grid = $('key-grid');
-    grid.innerHTML = '';
-    grid.classList.toggle('rtl', style.rtl);
-    const labels = G.labelsFor(layout);
-    key.answers.forEach((accepted, q) => {
-      const row = el('div', { class: 'key-row' + (accepted.length ? '' : ' empty') }, [el('span', { class: 'qnum', text: String(q + 1) })]);
-      labels.forEach((label, i) => {
-        row.appendChild(el('button', {
-          type: 'button', class: 'bubble' + (accepted.includes(i) ? ' on' : ''), text: label,
-          title: 'Question ' + (q + 1) + ': ' + label,
-          onclick: () => {
-            const a = key.answers[q];
-            key.answers[q] = a.includes(i) ? a.filter((x) => x !== i) : a.concat([i]).sort((x, y) => x - y);
-            keyChanged();
-          },
-        }));
-      });
-      grid.appendChild(row);
-    });
+    renderKeyList();
+    M.keyGrid.render($('key-grid'), key, keyChanged);
     const set = key.answers.filter((a) => a.length).length;
     $('key-status').textContent = set + ' of ' + layout.numQuestions + ' questions have an answer.';
     $('key-status').classList.remove('error');
   }
 
+  // The "Use a saved answer key" list: saved keys with the same layout as these sheets.
+  function renderKeyList() {
+    const sel = $('key-saved'), key = session.key;
+    sel.innerHTML = '';
+    sel.add(new Option('— New answer key —', ''));
+    savedKeys().filter((k) => G.sameLayout(k.layout, session.layout)).forEach((k) => {
+      sel.add(new Option((k.title || 'Untitled') + '  (' + new Date(k.updatedAt || Date.now()).toLocaleDateString() + ')', k.id));
+    });
+    sel.value = savedKeys().some((k) => k.id === key.id) ? key.id : '';
+  }
+
   function keyChanged() {
-    saveKey(session.key);
+    saveKeySoon();
     renderKey();
     renderSheets();
     if (session.reviewing >= 0) renderReview();
@@ -182,16 +169,13 @@
 
   $('key-title').addEventListener('input', () => {
     session.key.title = $('key-title').value.trim();
-    saveKey(session.key);
-    // refresh the saved list label without redrawing the grid
-    const opt = Array.from($('key-saved').options).find((o) => o.value === session.key.id);
-    if (opt) opt.text = (session.key.title || 'Untitled') + '  (' + new Date().toLocaleDateString() + ')';
-    else { $('key-saved').add(new Option(session.key.title || 'Untitled', session.key.id)); $('key-saved').value = session.key.id; }
+    saveKeySoon(); // the saved list refreshes itself once the key is saved
   });
 
   $('key-saved').addEventListener('change', () => {
     const id = $('key-saved').value;
-    session.key = id ? savedKeys().find((k) => k.id === id) : G.newKey(session.layout, '');
+    saveKeySoon.now();
+    session.key = id ? JSON.parse(JSON.stringify(D.getQuiz(id))) : G.newKey(session.layout, '');
     renderKey();
     renderSheets();
   });
@@ -507,17 +491,17 @@
 
   // ---------------- 4. Save & export ----------------
   function resultRows() {
-    const layout = session.layout;
     return session.sheets.filter(gradable).map((sheet) => {
       const st = studentById(sheet.id);
       const sc = G.score(session.key, sheet.answers);
+      // One saved result per student; a sheet with an unknown ID gets its own entry.
+      const docId = /^\d{7}$/.test(sheet.id || '') ? sheet.id : 'sheet-' + Date.now().toString(36) + '-' + sheet.n;
       return {
-        studentId: sheet.id, onRoster: !!st,
+        docId, studentId: sheet.id || '', onRoster: !!st,
         hebLast: st ? st.hebLast : '', hebFirst: st ? st.hebFirst : '',
         lastName: st ? st.lastName : '', firstName: st ? st.firstName : '',
         classCode: st ? st.classCode : '', classLabel: st ? st.classLabel : '',
         answers: sheet.answers.slice(),
-        answerText: sheet.answers.map((a) => G.answerText(a, layout)),
         correct: sc.correct, possible: sc.possible, percent: sc.percent,
         source: sheet.source, reviewed: sheet.reviewed,
       };
@@ -530,7 +514,7 @@
     return null;
   }
 
-  $('save-results').addEventListener('click', () => {
+  $('save-results').addEventListener('click', async () => {
     const problem = checkReadyToSave();
     const status = $('save-status');
     status.classList.toggle('error', !!problem);
@@ -538,42 +522,36 @@
     const waiting = session.sheets.filter(needsReview).length;
     if (waiting && !confirm(waiting + ' sheet(s) still need review. Save anyway?')) return;
     const rows = resultRows();
-    const storeKey = 'results.' + session.key.id;
-    const existing = M.storage.load(storeKey, null);
-    const byStudent = new Map((existing ? existing.rows : []).map((r) => [r.studentId, r]));
-    rows.forEach((r) => byStudent.set(r.studentId, Object.assign(r, { savedAt: Date.now() })));
-    saveKey(session.key);
-    const ok = M.storage.save(storeKey, {
-      quizId: session.key.id, title: session.key.title, layout: session.layout,
-      key: session.key.answers, savedAt: Date.now(), rows: Array.from(byStudent.values()),
-    });
-    status.textContent = ok ? 'Saved ' + rows.length + ' results for "' + session.key.title + '".' : 'Could not save (the browser blocked storage). Download the CSV instead.';
-    status.classList.toggle('error', !ok);
+    $('save-results').disabled = true;
+    status.textContent = 'Saving…';
+    try {
+      saveKeySoon.now();
+      const result = await D.saveResults(session.key, rows);
+      status.textContent = result === 'failed' ? M.ui.saveMessage(result)
+        : 'Saved ' + rows.length + (rows.length === 1 ? ' result' : ' results') + ' for "' + session.key.title + '". ' + M.ui.saveMessage(result) + ' See them in the Results tab.';
+      status.classList.toggle('error', result === 'failed');
+    } catch (err) {
+      console.error(err);
+      status.textContent = 'Could not save: ' + (M.cloud ? M.cloud.explain(err) : err.message);
+      status.classList.add('error');
+    } finally {
+      $('save-results').disabled = false;
+    }
   });
 
   $('export-results').addEventListener('click', () => {
     if (!session.key || !session.key.answers.some((a) => a.length)) { $('save-status').textContent = 'Enter the answer key first.'; return; }
-    const rows = resultRows().sort((a, b) =>
-      (a.classCode || 'zz').localeCompare(b.classCode || 'zz') || new Intl.Collator('he').compare(a.hebLast, b.hebLast) || new Intl.Collator('he').compare(a.hebFirst, b.hebFirst));
-    const n = session.layout.numQuestions;
-    const header = ['Class', 'כיתה', 'Hebrew Last Name', 'Hebrew First Name', 'Last Name', 'First Name', 'ID', 'Correct', 'Possible', 'Percent'];
-    for (let q = 1; q <= n; q++) header.push('Q' + q);
-    const keyRow = ['', '', 'Answer key', '', '', '', '', '', '', ''].concat(session.key.answers.map((a) => a.map((i) => G.labelsFor(session.layout)[i]).join(';')));
-    const lines = [header, keyRow].concat(rows.map((r) => [r.classCode, r.classLabel, r.hebLast, r.hebFirst, r.lastName, r.firstName, r.studentId, r.correct, r.possible, r.percent].concat(r.answerText)));
-    // The invisible mark at the start tells Excel the file is UTF-8, so Hebrew shows correctly.
-    download('﻿' + M.roster.toCsv(lines), safeName('Results ' + (session.key.title || 'quiz')) + '.csv', 'text/csv');
+    const rows = M.results.prepare(session.key, resultRows(), roster()).sort((a, b) =>
+      (a.classCode || 'zz').localeCompare(b.classCode || 'zz') || M.results.byHebrewName(a, b));
+    M.ui.download(M.results.resultsCsv(session.key, rows.map((r) => ({ student: null, result: r }))),
+      M.ui.safeName('Results ' + (session.key.title || 'quiz')) + '.csv', 'text/csv');
   });
 
-  function safeName(s) {
-    return String(s).replace(/[^A-Za-z0-9 _().-]+/g, ' ').replace(/\s+/g, ' ').trim() || 'quiz';
-  }
+  function safeName(s) { return M.ui.safeName(s); }
+  function download(text, name, type) { M.ui.download(text, name, type); }
 
-  function download(text, name, type) {
-    const url = URL.createObjectURL(new Blob([text], { type: type + ';charset=utf-8' }));
-    const a = el('a', { href: url, download: name });
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 5000);
-  }
+  // A saved key changed somewhere else (e.g. edited on the Results tab, or loaded after signing in)
+  document.addEventListener('millim:data', () => { if (session.layout) renderKeyList(); });
 
   document.addEventListener('millim:roster', () => { if (session.sheets.length) renderSheets(); });
 })();

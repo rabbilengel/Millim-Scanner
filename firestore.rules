@@ -1,0 +1,10 @@
+// Firebase security rules: each account can read and change only its own data.
+// Paste this into Firebase console → Firestore Database → Rules (see docs/firebase-setup.md).
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
