@@ -136,7 +136,17 @@
 
   function deleteResult(quizId, docId) { return confirmed(resultsRef(quizId).doc(docId).delete()); }
 
+  // The roster, if the teacher changed it in the app: one record { csv, name, updatedAt }
+  const rosterDoc = () => userDoc().collection('settings').doc('roster');
+  async function getRoster() {
+    const snap = await rosterDoc().get();
+    return snap.exists ? snap.data() : null;
+  }
+  function saveRoster(record) { return confirmed(rosterDoc().set(record)); }
+  function deleteRoster() { return confirmed(rosterDoc().delete()); }
+
   M.cloud = {
+    getRoster, saveRoster, deleteRoster,
     available, init, onAccountChange, currentUser, signIn, signOut, resetPassword, explain,
     listQuizzes, saveQuiz, deleteQuiz, listResults, saveResults, deleteResult,
   };

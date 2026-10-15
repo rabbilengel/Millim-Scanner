@@ -51,6 +51,14 @@
     },
   };
 
+  // The roster as changed in the app (null = use the original roster from data/roster.csv)
+  local.getRoster = async () => {
+    const r = S().load('rosterOverride', null);
+    return r && r.csv ? { csv: r.csv, name: r.name || '', updatedAt: r.updatedAt || r.loadedAt || null } : null;
+  };
+  local.saveRoster = async (record) => (S().save('rosterOverride', record) ? 'saved' : 'failed');
+  local.deleteRoster = async () => { S().remove('rosterOverride'); return 'saved'; };
+
   const backend = () => (mode === 'cloud' ? M.cloud : local);
 
   async function start(newMode) {
@@ -130,7 +138,12 @@
     return importAll(data);
   }
 
+  function getRoster() { return backend().getRoster(); }
+  function saveRoster(csv, name) { return backend().saveRoster({ csv, name: name || '', updatedAt: Date.now() }); }
+  function resetRoster() { return backend().deleteRoster(); }
+
   M.dataStore = {
+    getRoster, saveRoster, resetRoster,
     start, mode: () => mode, quizzes, getQuiz, saveQuiz, deleteQuiz,
     listResults, saveResults, deleteResult, exportAll, importAll, localOnlyCount, uploadLocal,
     _local: local,

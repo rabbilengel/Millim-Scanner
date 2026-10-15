@@ -24,35 +24,60 @@
   document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => showTab(t.dataset.tab)));
 
   // ---------------- Roster ----------------
+  // The original roster: data/roster.csv (read fresh on the website; built-in copy when opened from a file).
+  async function originalRosterCsv() {
+    if (location.protocol.startsWith('http')) {
+      try {
+        const res = await fetch('data/roster.csv', { cache: 'no-cache' });
+        if (res.ok) return res.text();
+      } catch (e) { /* use the built-in copy */ }
+    }
+    return window.MILLIM_ROSTER_CSV || '';
+  }
+
+  // Use the roster as changed in the app (saved to your account, or this browser), else the original.
   async function loadRoster() {
-    const override = M.storage.load('rosterOverride', null);
-    let csv = null;
-    if (override && override.csv) {
-      csv = override.csv;
-      state.rosterSource = 'from the file "' + override.name + '" you loaded on ' + new Date(override.loadedAt).toLocaleDateString();
+    let saved = null;
+    try { saved = await M.dataStore.getRoster(); } catch (err) { console.error(err); }
+    let csv;
+    if (saved && saved.csv) {
+      csv = saved.csv;
+      const where = M.dataStore.mode() === 'cloud' ? 'saved to your account' : 'saved in this browser';
+      state.rosterSource = 'your edited roster, ' + where + (saved.updatedAt ? ' (last changed ' + new Date(saved.updatedAt).toLocaleDateString() + ')' : '');
     } else {
-      // On a website (GitHub Pages) read the latest data/roster.csv; when opened from a file, use the built-in copy.
-      if (location.protocol.startsWith('http')) {
-        try {
-          const res = await fetch('data/roster.csv', { cache: 'no-cache' });
-          if (res.ok) { csv = await res.text(); state.rosterSource = 'from data/roster.csv in the project'; }
-        } catch (e) { /* fall back below */ }
-      }
-      if (!csv) { csv = window.MILLIM_ROSTER_CSV || ''; state.rosterSource = 'built into the app (from data/roster.csv)'; }
+      csv = await originalRosterCsv();
+      state.rosterSource = 'the original roster (data/roster.csv)';
     }
     state.roster = M.roster.fromCsv(csv);
-    // Share the roster with the other screens (e.g. Grade scans).
+    // Share the roster with the other screens (e.g. Grade scans, Results).
     M.currentRoster = state.roster;
     document.dispatchEvent(new CustomEvent('millim:roster'));
-    $('roster-reset').hidden = !override;
+    $('roster-reset').hidden = !(saved && saved.csv);
     renderRoster();
     fillClassAndGradeLists();
+  }
+
+  // Save a changed roster, then show it everywhere.
+  async function saveRosterCsv(csv, name, doneMessage) {
+    const status = $('roster-status');
+    status.classList.remove('error');
+    status.textContent = 'Saving…';
+    try {
+      const result = await M.dataStore.saveRoster(csv, name);
+      await loadRoster();
+      status.textContent = result === 'failed' ? M.ui.saveMessage(result) : doneMessage + ' ' + M.ui.saveMessage(result);
+      status.classList.toggle('error', result === 'failed');
+    } catch (err) {
+      console.error(err);
+      status.textContent = 'Could not save the roster: ' + (M.cloud ? M.cloud.explain(err) : err.message);
+      status.classList.add('error');
+    }
   }
 
   function renderRoster() {
     const r = state.roster;
     $('roster-summary').textContent =
-      r.students.length + ' students in ' + r.classes.length + ' classes — roster ' + state.rosterSource + '.';
+      r.students.length + ' students in ' + r.classes.length + ' classes — ' + state.rosterSource + '.';
     const problems = $('roster-problems');
     problems.innerHTML = '';
     r.problems.forEach((msg) => { const li = document.createElement('li'); li.textContent = msg; problems.appendChild(li); });
@@ -82,28 +107,128 @@
         if (col >= 3) td.dir = 'ltr';
         tr.appendChild(td);
       });
+      const td = document.createElement('td');
+      const edit = document.createElement('button');
+      edit.type = 'button';
+      edit.className = 'link-button';
+      edit.textContent = 'Edit';
+      edit.addEventListener('click', () => openStudent(s));
+      td.appendChild(edit);
+      tr.appendChild(td);
       tbody.appendChild(tr);
     });
   }
 
+  // ----- Add / edit one student -----
+  let editing = null; // the student being edited, or null when adding
+
+  function fillClassSelect(current) {
+    const sel = $('st-class');
+    sel.innerHTML = '';
+    state.roster.classes.forEach((c) => sel.add(new Option(c + '  —  ' + M.hebrew.classLabel(c), c)));
+    sel.add(new Option('Another class…', '__new'));
+    sel.value = state.roster.classes.includes(current) ? current : (current ? '__new' : (state.selectedClass || state.roster.classes[0] || '__new'));
+    $('st-class-new').value = current && !state.roster.classes.includes(current) ? current : '';
+    $('st-class-new-wrap').hidden = sel.value !== '__new';
+  }
+
+  function openStudent(s) {
+    editing = s || null;
+    $('student-dialog-title').textContent = s ? 'Edit student' : 'Add a student';
+    $('st-heb-first').value = s ? s.hebFirst : '';
+    $('st-heb-last').value = s ? s.hebLast : '';
+    $('st-first').value = s ? s.firstName : '';
+    $('st-last').value = s ? s.lastName : '';
+    $('st-id').value = s ? s.id : '';
+    fillClassSelect(s ? s.classCode : null);
+    $('st-delete').hidden = !s;
+    $('st-problems').innerHTML = '';
+    $('st-warning').textContent = '';
+    $('student-dialog').showModal();
+    $('st-heb-first').focus();
+  }
+
+  function studentFromForm() {
+    const classCode = $('st-class').value === '__new' ? $('st-class-new').value.replace(/\s+/g, '') : $('st-class').value;
+    return {
+      id: $('st-id').value.replace(/\D/g, ''),
+      hebFirst: $('st-heb-first').value.trim(), hebLast: $('st-heb-last').value.trim(),
+      firstName: $('st-first').value.trim(), lastName: $('st-last').value.trim(),
+      classCode,
+    };
+  }
+
+  $('st-class').addEventListener('change', () => {
+    $('st-class-new-wrap').hidden = $('st-class').value !== '__new';
+    if (!$('st-class-new-wrap').hidden) $('st-class-new').focus();
+  });
+
+  $('st-id').addEventListener('input', () => {
+    const changed = editing && $('st-id').value.replace(/\D/g, '') !== editing.id;
+    $('st-warning').textContent = changed
+      ? 'Changing the ID: results already saved under the old ID (' + editing.id + ') will no longer be matched to this student, and printed sheets with the old ID will read as unknown.'
+      : '';
+  });
+
+  $('student-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const s = studentFromForm();
+    const problems = M.roster.checkStudent(state.roster, s, editing ? editing.id : null);
+    const list = $('st-problems');
+    list.innerHTML = '';
+    problems.forEach((p) => { const li = document.createElement('li'); li.textContent = p; list.appendChild(li); });
+    if (problems.length) return;
+    const wasEditing = editing;
+    $('student-dialog').close();
+    state.selectedClass = s.classCode;
+    const name = (s.hebFirst + ' ' + s.hebLast).trim() || s.firstName + ' ' + s.lastName;
+    await saveRosterCsv(M.roster.csvWithStudent(state.roster, s, wasEditing ? wasEditing.id : null), 'edited in the app',
+      wasEditing ? 'Saved changes to ' + name + '.' : 'Added ' + name + ' to ' + M.hebrew.classLabel(s.classCode) + '.');
+  });
+
+  $('st-cancel').addEventListener('click', () => $('student-dialog').close());
+
+  $('st-delete').addEventListener('click', async () => {
+    const s = editing;
+    if (!s) return;
+    const name = (s.hebFirst + ' ' + s.hebLast).trim() || s.firstName + ' ' + s.lastName;
+    if (!confirm('Remove ' + name + ' (' + s.id + ') from the roster?\n\nTheir saved quiz results are kept.')) return;
+    $('student-dialog').close();
+    await saveRosterCsv(M.roster.csvWithoutStudent(state.roster, s.id), 'edited in the app', 'Removed ' + name + '.');
+  });
+
+  $('roster-add').addEventListener('click', () => openStudent(null));
+
+  // ----- Whole roster -----
   $('roster-file').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     e.target.value = '';
     if (!file) return;
-    const csv = await file.text();
-    const parsed = M.roster.fromCsv(csv);
+    const parsed = M.roster.fromCsv(await file.text());
     if (!parsed.students.length) {
       alert('That file could not be used as a roster:\n\n' + parsed.problems.join('\n'));
       return;
     }
-    M.storage.save('rosterOverride', { csv, name: file.name, loadedAt: Date.now() });
-    await loadRoster();
+    let msg = 'Replace the roster (' + state.roster.students.length + ' students) with "' + file.name + '" (' + parsed.students.length + ' students in ' + parsed.classes.length + ' classes)?';
+    if (parsed.problems.length) msg += '\n\nSome rows will be skipped:\n' + parsed.problems.slice(0, 8).join('\n') + (parsed.problems.length > 8 ? '\n…' : '');
+    if (!confirm(msg)) return;
+    await saveRosterCsv(M.roster.studentsToCsv(parsed.students), file.name, 'Roster replaced with "' + file.name + '".');
+  });
+
+  $('roster-download').addEventListener('click', () => {
+    // The invisible mark at the start tells Excel the file is UTF-8, so Hebrew shows correctly.
+    M.ui.download('﻿' + M.roster.studentsToCsv(state.roster.students), 'Roster ' + new Date().toISOString().slice(0, 10) + '.csv', 'text/csv');
   });
 
   $('roster-reset').addEventListener('click', async () => {
-    M.storage.remove('rosterOverride');
+    if (!confirm('Undo all roster changes and go back to the original roster (data/roster.csv)?')) return;
+    await M.dataStore.resetRoster();
     await loadRoster();
+    $('roster-status').textContent = 'Back to the original roster.';
   });
+
+  // Once we know where data lives (signed in, or this browser), load the roster from there.
+  document.addEventListener('millim:ready', loadRoster);
 
   // ---------------- Answer sheet form ----------------
   function fillStaticLists() {

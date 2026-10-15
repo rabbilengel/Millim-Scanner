@@ -56,7 +56,7 @@ Scanning tips: grayscale (or color), 200–300 dpi. One sheet per page.
 - **Download** results or item analysis as CSV (for the whole quiz or one class).
 - **Backup:** download one file with all your quizzes and results, and restore it on any computer.
 
-**Roster tab** — shows each class, sorted by Hebrew last name.
+**Roster tab** — shows each class, sorted by Hebrew last name; add, edit and remove students (see below).
 
 **Signing in and out** — when you open the website you'll be asked for your email and password. On a shared
 computer, untick "Keep me signed in", or click **Sign out** (top right) when you're done; signing out also erases the
@@ -64,14 +64,17 @@ copy of your data kept on that computer. Forgot your password? Type your email a
 
 ## Updating the roster
 
-The roster is the file `data/roster.csv`, with columns:
-`Last Name, First Name, Zipgrade ID, Class, Hebrew First Name, Hebrew Last Name` (class like `4_1`).
+Everything is done in the **Roster** tab:
+- **+ Add a student** — Hebrew and English names, 7-digit ID, class (or a new class like `4_6`).
+- **Edit** (next to each student) — fix a name, move to another class, change the ID, or **remove** a student who left.
+- **Replace the whole roster from a CSV file** — e.g. a new list at the start of the year
+  (columns: `Last Name, First Name, Zipgrade ID, Class, Hebrew First Name, Hebrew Last Name`).
+- **Download the roster (CSV)** — opens in Excel with Hebrew names.
+- **Undo all my changes** — go back to the original roster.
 
-To replace it: on GitHub, open the `data` folder → **Add file → Upload files** → upload your new file
-**named `roster.csv`** → **Commit changes**. Then ask Claude to "update the built-in roster" (this refreshes the copy
-used when the app is opened from a file). The website version reads `roster.csv` directly.
-
-You can also load a different roster just on your own computer: **Roster tab → Load a different roster file…**
+Changes are saved to your account (so they appear on every computer you sign in on), or in the browser if you're
+not signed in. The original roster is `data/roster.csv` in this project; the app uses it until you make a change.
+Saved quiz results are kept when a student is removed or moved.
 
 ## How the project is organized
 

@@ -134,25 +134,76 @@
         <p id="roster-summary">Loading…</p>
         <ul id="roster-problems" class="problems"></ul>
         <div class="actions">
+          <button type="button" id="roster-add" class="primary">+ Add a student</button>
           <label class="button">
-            Load a different roster file…
+            Replace the whole roster from a CSV file…
             <input id="roster-file" type="file" accept=".csv,text/csv" hidden>
           </label>
-          <button type="button" id="roster-reset" hidden>Go back to the built-in roster</button>
+          <button type="button" id="roster-download">Download the roster (CSV)</button>
+          <button type="button" id="roster-reset" class="link-button" hidden>Undo all my changes (go back to the original roster)</button>
+          <span id="roster-status" class="status" role="status"></span>
         </div>
-        <p class="hint">The roster file needs these columns: Last Name, First Name, Zipgrade ID, Class (like 4_1),
-          Hebrew First Name, Hebrew Last Name.</p>
+        <p class="hint">A roster file needs these columns: Last Name, First Name, Zipgrade ID, Class (like 4_1),
+          Hebrew First Name, Hebrew Last Name — the same as the file you download here.</p>
       </div>
 
       <div class="card">
         <div id="class-picker" class="class-picker"></div>
         <table id="roster-table" class="roster-table" dir="rtl">
           <thead>
-            <tr><th>#</th><th>שם משפחה</th><th>שם פרטי</th><th dir="ltr">Name</th><th dir="ltr">ID</th></tr>
+            <tr><th>#</th><th>שם משפחה</th><th>שם פרטי</th><th dir="ltr">Name</th><th dir="ltr">ID</th><th></th></tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
+
+      <!-- Add / edit one student -->
+      <dialog id="student-dialog" class="dialog">
+        <form id="student-form" method="dialog" autocomplete="off">
+          <h2 id="student-dialog-title">Add a student</h2>
+          <div class="row">
+            <label class="field grow">
+              <span>שם פרטי (Hebrew first name)</span>
+              <input id="st-heb-first" type="text" dir="rtl" lang="he">
+            </label>
+            <label class="field grow">
+              <span>שם משפחה (Hebrew last name)</span>
+              <input id="st-heb-last" type="text" dir="rtl" lang="he">
+            </label>
+          </div>
+          <div class="row">
+            <label class="field grow">
+              <span>First name (English)</span>
+              <input id="st-first" type="text" dir="ltr">
+            </label>
+            <label class="field grow">
+              <span>Last name (English)</span>
+              <input id="st-last" type="text" dir="ltr">
+            </label>
+          </div>
+          <div class="row">
+            <label class="field grow">
+              <span>Student ID (7 digits)</span>
+              <input id="st-id" type="text" inputmode="numeric" maxlength="7" dir="ltr">
+            </label>
+            <label class="field grow">
+              <span>Class</span>
+              <select id="st-class"></select>
+            </label>
+            <label class="field grow" id="st-class-new-wrap" hidden>
+              <span>New class code (like 4_6)</span>
+              <input id="st-class-new" type="text" dir="ltr" maxlength="5">
+            </label>
+          </div>
+          <p id="st-warning" class="hint warn-text"></p>
+          <ul id="st-problems" class="problems"></ul>
+          <div class="actions dialog-actions">
+            <button type="submit" id="st-save" class="primary" value="save">Save</button>
+            <button type="button" id="st-cancel">Cancel</button>
+            <button type="button" id="st-delete" class="link-button danger">Remove this student from the roster</button>
+          </div>
+        </form>
+      </dialog>
     </section>
 
     <!-- ================= GRADE SCANS ================= -->
